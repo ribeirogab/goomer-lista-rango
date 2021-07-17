@@ -4,7 +4,7 @@ import { IPromotion } from '@modules/products/models/IPromotion';
 
 import { ICreatePromotionDTO } from '../dtos/ICreatePromotionDTO';
 import { IUpdatePromotionByProductIdDTO } from '../dtos/IUpdatePromotionByProductIdDTO';
-import { IPromotionRepository } from '../IPromotionsRepository';
+import { IPromotionsRepository } from '../IPromotionsRepository';
 
 type PromotionEntity = {
   id: string;
@@ -17,7 +17,7 @@ type PromotionEntity = {
   updatedAt: Date;
 };
 
-export class FakePromotionsRepository implements IPromotionRepository {
+export class FakePromotionsRepository implements IPromotionsRepository {
   private promotions: PromotionEntity[];
 
   constructor() {

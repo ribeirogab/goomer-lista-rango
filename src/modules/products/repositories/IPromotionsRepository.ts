@@ -2,7 +2,7 @@ import { IPromotion } from '../models/IPromotion';
 import { ICreatePromotionDTO } from './dtos/ICreatePromotionDTO';
 import { IUpdatePromotionByProductIdDTO } from './dtos/IUpdatePromotionByProductIdDTO';
 
-export interface IPromotionRepository {
+export interface IPromotionsRepository {
   create({
     productId,
     description,
