@@ -1,15 +1,18 @@
-type WeekDayName =
-  | 'sunday'
-  | 'monday'
-  | 'tuesday'
-  | 'wednesday'
-  | 'thursday'
-  | 'friday'
-  | 'saturday';
+type WeekDayHours = {
+  startHour: string | null;
+  finishHour: string | null;
+};
+type WorkSchedules = {
+  sunday?: WeekDayHours;
+  monday?: WeekDayHours;
+  tuesday?: WeekDayHours;
+  wednesday?: WeekDayHours;
+  thursday?: WeekDayHours;
+  friday?: WeekDayHours;
+  saturday?: WeekDayHours;
+};
 
 export interface ICreateWorkScheduleDTO {
   restaurantId: string;
-  weekDayName: WeekDayName;
-  startHour: string | null;
-  finishHour: string | null;
+  workSchedules?: WorkSchedules;
 }

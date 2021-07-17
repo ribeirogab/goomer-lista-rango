@@ -8,9 +8,9 @@ export interface IRestaurant {
   imageUrl: string | null;
 
   // relations
-  addresses?: IRestaurantAddress[];
-  workSchedules?: IWorkSchedule;
+  addresses: IRestaurantAddress[];
+  workSchedules: IWorkSchedule;
 
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }

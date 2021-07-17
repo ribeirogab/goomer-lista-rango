@@ -4,9 +4,7 @@ import { ICreateWorkScheduleDTO } from './dtos/ICreateWorkScheduleDTO';
 export interface IWorkSchedulesRepository {
   create({
     restaurantId,
-    weekDayName,
-    startHour,
-    finishHour,
+    workSchedules,
   }: ICreateWorkScheduleDTO): Promise<IWorkSchedule>;
 
   findByRestaurant({
