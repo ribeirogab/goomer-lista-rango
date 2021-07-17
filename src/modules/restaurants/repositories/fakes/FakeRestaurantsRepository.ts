@@ -128,23 +128,20 @@ export class FakeRestaurantsRepository implements IRestaurantsRepository {
   public async updateById(
     restaurantId: string,
     { name }: { name: string },
-  ): Promise<Omit<IRestaurant, 'addresses' | 'workSchedules'> | null> {
+  ): Promise<IRestaurant> {
     const restaurantIndex = this.restaurants.findIndex(
       restaurant => restaurant.id === restaurantId,
     );
 
     if (restaurantIndex === -1) {
-      return null;
+      throw new Error('Restaurant does not exist.');
     }
 
     this.restaurants[restaurantIndex].name = name;
 
-    const restaurantWithImageUrl = {
-      ...this.restaurants[restaurantIndex],
-      imageUrl: null,
-    };
+    const restaurant = (await this.findById(restaurantId)) as IRestaurant;
 
-    return restaurantWithImageUrl;
+    return restaurant;
   }
 
   public async deleteById(restaurantId: string): Promise<void> {

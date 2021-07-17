@@ -17,8 +17,8 @@ export interface IRestaurantsRepository {
 
   updateById(
     restaurantId: string,
-    { name }: { name: string },
-  ): Promise<Omit<IRestaurant, 'addresses' | 'workSchedules'> | null>;
+    { name }: { name?: string },
+  ): Promise<IRestaurant>;
 
   deleteById(restaurantId: string): Promise<void>;
 }

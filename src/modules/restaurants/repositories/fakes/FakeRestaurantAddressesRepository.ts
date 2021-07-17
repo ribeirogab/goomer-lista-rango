@@ -2,6 +2,7 @@ import { FakeAddressesRepository } from '@modules/addresses/repositories/fakes/F
 import { IRestaurantAddress } from '@modules/restaurants/models/IRestaurantAddress';
 
 import { ICreateManyRestaurantAddressesDTO } from '../dtos/ICreateManyRestaurantAddressesDTO';
+import { IUpdateRestaurantAddressesByRestaurantIdDTO } from '../dtos/IUpdateRestaurantAddressesByRestaurantIdDTO';
 import { IRestaurantAddressesRepository } from '../IRestaurantAddressesRepository';
 
 type RestaurantAddressesEntity = {
@@ -110,6 +111,24 @@ export class FakeRestaurantAddressesRepository
     const fullRestaurantAddresses = await Promise.all(
       fullRestaurantAddressesPromises,
     );
+
+    return fullRestaurantAddresses;
+  }
+
+  public async updateByRestaurantId({
+    restaurantId,
+    addresses,
+  }: IUpdateRestaurantAddressesByRestaurantIdDTO): Promise<
+    IRestaurantAddress[]
+  > {
+    this.restaurantAddresses = this.restaurantAddresses.filter(
+      restaurantAddress => restaurantAddress.restaurantId !== restaurantId,
+    );
+
+    const fullRestaurantAddresses = await this.createMany({
+      restaurantId,
+      addresses,
+    });
 
     return fullRestaurantAddresses;
   }

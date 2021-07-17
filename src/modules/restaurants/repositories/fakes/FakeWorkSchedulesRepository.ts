@@ -1,6 +1,7 @@
 import { IWorkSchedule } from '@modules/restaurants/models/IWorkSchedule';
 
 import { ICreateWorkScheduleDTO } from '../dtos/ICreateWorkScheduleDTO';
+import { IUpdateWorkScheduleByRestaurantIdDTO } from '../dtos/IUpdateWorkScheduleByRestaurantIdDTO';
 import { IWorkSchedulesRepository } from '../IWorkSchedulesRepository';
 
 type WeekDayName =
@@ -103,5 +104,18 @@ export class FakeWorkSchedulesRepository implements IWorkSchedulesRepository {
     }
 
     return restaurantWorkDays;
+  }
+
+  public async updateByRestaurantId({
+    restaurantId,
+    workSchedules,
+  }: IUpdateWorkScheduleByRestaurantIdDTO): Promise<IWorkSchedule> {
+    this.workSchedules = this.workSchedules.filter(
+      workSchedule => workSchedule.restaurantId !== restaurantId,
+    );
+
+    const workDays = await this.create({ restaurantId, workSchedules });
+
+    return workDays;
   }
 }
