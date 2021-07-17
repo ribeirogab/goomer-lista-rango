@@ -12,7 +12,7 @@ export type WeekDayDTO = {
   finishHour: string | null;
 };
 
-export interface IWorkSchedulesDTO {
+export interface IWorkSchedule {
   sunday?: WeekDayDTO;
   monday?: WeekDayDTO;
   tuesday?: WeekDayDTO;
@@ -20,14 +20,4 @@ export interface IWorkSchedulesDTO {
   thursday?: WeekDayDTO;
   friday?: WeekDayDTO;
   saturday?: WeekDayDTO;
-}
-
-export interface IWorkSchedule {
-  restaurantId: string;
-  weekDay: WeekDayName;
-  startHour: string | null;
-  finishHour: string | null;
-
-  createdAt?: Date;
-  updatedAt?: Date;
 }
