@@ -1,4 +1,5 @@
 import { ICategory } from './ICategory';
+import { IPromotion } from './IPromotion';
 
 export interface IProduct {
   id: string;
@@ -9,6 +10,7 @@ export interface IProduct {
 
   // relations
   category: ICategory;
+  promotion: IPromotion | null;
 
   createdAt: Date;
   updatedAt: Date;

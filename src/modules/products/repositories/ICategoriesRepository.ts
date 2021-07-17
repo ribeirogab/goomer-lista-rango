@@ -1,10 +1,18 @@
 import { ICategory } from '../models/ICategory';
 import { ICreateCategoryDTO } from './dtos/ICreateCategoryDTO';
+import { IFindCategoryByIdDTO } from './dtos/IFindCategoryByIdDTO';
+import { IFindCategoryByNameDTO } from './dtos/IFindCategoryByNameDTO';
 
 export interface ICategoriesRepository {
   create({ restaurantId, name }: ICreateCategoryDTO): Promise<ICategory>;
 
-  findByName(categoryName: string): Promise<ICategory | null>;
+  findByName({
+    restaurantId,
+    categoryName,
+  }: IFindCategoryByNameDTO): Promise<ICategory | null>;
 
-  findById(categoryId: string): Promise<ICategory | null>;
+  findById({
+    restaurantId,
+    categoryId,
+  }: IFindCategoryByIdDTO): Promise<ICategory | null>;
 }

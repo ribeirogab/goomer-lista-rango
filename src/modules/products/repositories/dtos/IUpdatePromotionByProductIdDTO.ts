@@ -1,7 +1,7 @@
 export interface IUpdatePromotionByProductIdDTO {
-  productionId: string;
+  productId: string;
   description?: string;
-  price: number;
-  startDatetime: Date;
-  finishDatetime: Date;
+  price?: number;
+  startDatetime?: Date;
+  finishDatetime?: Date;
 }

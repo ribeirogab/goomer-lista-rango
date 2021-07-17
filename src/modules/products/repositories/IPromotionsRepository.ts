@@ -4,7 +4,7 @@ import { IUpdatePromotionByProductIdDTO } from './dtos/IUpdatePromotionByProduct
 
 export interface IPromotionRepository {
   create({
-    productionId,
+    productId,
     description,
     price,
     startDatetime,
@@ -12,10 +12,12 @@ export interface IPromotionRepository {
   }: ICreatePromotionDTO): Promise<IPromotion>;
 
   updateByProductId({
-    productionId,
+    productId,
     description,
     price,
     startDatetime,
     finishDatetime,
-  }: IUpdatePromotionByProductIdDTO): Promise<IPromotion>;
+  }: IUpdatePromotionByProductIdDTO): Promise<IPromotion | null>;
+
+  findByProductId(productId: string): Promise<IPromotion | null>;
 }

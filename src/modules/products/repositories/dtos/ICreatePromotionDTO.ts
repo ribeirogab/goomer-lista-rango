@@ -1,5 +1,5 @@
 export interface ICreatePromotionDTO {
-  productionId: string;
+  productId: string;
   description?: string;
   price: number;
   startDatetime: Date;

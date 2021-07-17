@@ -1,6 +1,7 @@
 export interface IUpdateProductDTO {
   restaurantId: string;
-  promotionId?: string;
+  productId: string;
+  categoryId: string;
   name?: string;
   price?: number;
 }

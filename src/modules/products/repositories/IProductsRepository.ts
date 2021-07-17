@@ -7,10 +7,9 @@ export interface IProductsRepository {
   create({
     restaurantId,
     categoryId,
-    promotionId,
     name,
     price,
-  }: ICreateProductDTO): Promise<IProduct>;
+  }: ICreateProductDTO): Promise<Omit<IProduct, 'promotion' | 'category'>>;
 
   findAll({
     restaurantId,
@@ -24,11 +23,12 @@ export interface IProductsRepository {
   }: {
     restaurantId: string;
     productId: string;
-  }): Promise<IProduct>;
+  }): Promise<IProduct | null>;
 
   update({
     restaurantId,
-    promotionId,
+    productId,
+    categoryId,
     name,
     price,
   }: IUpdateProductDTO): Promise<IProduct>;

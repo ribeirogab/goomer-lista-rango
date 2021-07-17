@@ -1,10 +1,7 @@
 export interface IPromotion {
   id: string;
-  description: string;
+  description: string | null;
   price: number;
   startDatetime: Date;
   finishDatetime: Date;
-
-  createdAt: Date;
-  updatedAt: Date;
 }
