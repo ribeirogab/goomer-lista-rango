@@ -11,5 +11,5 @@ export interface IWorkSchedulesRepository {
     restaurantId,
   }: {
     restaurantId: string;
-  }): Promise<IWorkSchedule[]>;
+  }): Promise<IWorkSchedule | null>;
 }

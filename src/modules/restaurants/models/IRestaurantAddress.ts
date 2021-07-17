@@ -4,7 +4,7 @@ export interface IRestaurantAddress {
   city: string;
   neighborhood: string;
   street: string;
-  number: number;
+  number: string;
   country: string;
   countryCode: string;
 

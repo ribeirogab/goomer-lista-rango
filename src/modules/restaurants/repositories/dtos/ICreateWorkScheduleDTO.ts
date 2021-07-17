@@ -2,6 +2,7 @@ type WeekDayHours = {
   startHour: string | null;
   finishHour: string | null;
 };
+
 type WorkSchedules = {
   sunday?: WeekDayHours;
   monday?: WeekDayHours;

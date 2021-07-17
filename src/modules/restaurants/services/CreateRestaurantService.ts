@@ -13,7 +13,7 @@ interface IRequest {
   name: string;
   addresses: {
     postalCode: string;
-    number: number;
+    number: string;
   }[];
   workSchedules?: {
     sunday?: IWeekDayHours;

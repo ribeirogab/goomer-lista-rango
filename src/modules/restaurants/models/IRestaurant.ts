@@ -9,7 +9,7 @@ export interface IRestaurant {
 
   // relations
   addresses: IRestaurantAddress[];
-  workSchedules: IWorkSchedule;
+  workSchedules: IWorkSchedule | null;
 
   createdAt: Date;
   updatedAt: Date;
