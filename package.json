@@ -5,6 +5,18 @@
   "repository": "git@github.com:ribeirogab/goomer-lista-rango.git",
   "author": "ribeirogab <ribeirogabx@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
+    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --no-notify --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
+    "start": "node dist/shared/infra/http/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "reflect-metadata": "^0.1.13",
+    "tsyringe": "^4.6.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
@@ -13,6 +25,8 @@
     "@babel/plugin-proposal-decorators": "^7.12.13",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-typescript": "^7.12.7",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
     "babel-plugin-module-resolver": "^4.1.0",
