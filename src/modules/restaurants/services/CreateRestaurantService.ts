@@ -56,7 +56,7 @@ export class CreateRestaurantService {
 
       if (!address) {
         address = {
-          postalCode: '',
+          postalCode: inputAddress.postalCode,
           state: '',
           city: '',
           neighborhood: '',
@@ -66,7 +66,7 @@ export class CreateRestaurantService {
         } as IAddress;
       }
 
-      return { postalCode: address?.postalCode, number: inputAddress.number };
+      return { postalCode: address.postalCode, number: inputAddress.number };
     });
 
     const addresses = await Promise.all(addressesPromises);
