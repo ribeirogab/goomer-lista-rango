@@ -59,11 +59,7 @@ export class UpdateRestaurantService {
     );
 
     if (!restaurantExists) {
-      throw new AppError(
-        'Restaurant does not exist.',
-        400,
-        'restaurant.update.restaurant.not.exist',
-      );
+      throw new AppError('Restaurant does not exist.', 400);
     }
 
     if (inputAddresses) {
@@ -102,10 +98,10 @@ export class UpdateRestaurantService {
       });
     }
 
-    const updatedRestaurant = await this.restaurantsRepository.updateById(
+    const updatedRestaurant = (await this.restaurantsRepository.updateById(
       restaurantId,
       { name },
-    );
+    )) as IRestaurant;
 
     return updatedRestaurant;
   }
