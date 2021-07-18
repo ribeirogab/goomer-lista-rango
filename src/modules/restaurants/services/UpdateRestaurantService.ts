@@ -38,14 +38,14 @@ export class UpdateRestaurantService {
     @inject('RestaurantsRepository')
     private restaurantsRepository: IRestaurantsRepository,
 
-    @inject('WorkSchedulesRepository')
-    private workSchedulesRepository: IWorkSchedulesRepository,
+    @inject('AddressesRepository')
+    private addressesRepository: IAddressesRepository,
 
     @inject('RestaurantAddressesRepository')
     private restaurantAddressesRepository: IRestaurantAddressesRepository,
 
-    @inject('AddressesRepository')
-    private addressesRepository: IAddressesRepository,
+    @inject('WorkSchedulesRepository')
+    private workSchedulesRepository: IWorkSchedulesRepository,
   ) {}
 
   public async execute({
