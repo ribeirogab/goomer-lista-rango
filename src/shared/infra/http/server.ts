@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import 'express-async-errors';
+import '@config/dotenv';
 import '@shared/container';
 
 import { errors as celebrateErrors } from 'celebrate';

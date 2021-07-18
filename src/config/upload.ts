@@ -36,7 +36,7 @@ const multerStorage = multer.diskStorage({
 });
 
 const uploadConfig: IUploadConfig = {
-  driver: 'disk',
+  driver: (process.env.STORAGE_DRIVER as 'disk') ?? 'disk',
   tmpFolder,
   uploadsFolder: path.resolve(tmpFolder, 'uploads'),
   multer: {

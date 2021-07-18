@@ -7,15 +7,17 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
-    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --no-notify --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
+    "dev": "cross-env NODE_ENV=dev ts-node-dev -r tsconfig-paths/register --inspect --no-notify --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
     "start": "node dist/shared/infra/http/server.js",
-    "test": "jest"
+    "test": "cross-env NODE_ENV=dev jest"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "celebrate": "^15.0.0",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "crypto": "^1.0.1",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "multer": "^1.4.2",
