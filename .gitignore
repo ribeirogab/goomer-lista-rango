@@ -105,3 +105,7 @@ dist
 
 # Configs of VScode
 .vscode
+
+# Temp folder
+tmp/uploads/*
+!tmp/uploads/.gitkeep
