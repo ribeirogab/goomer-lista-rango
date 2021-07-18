@@ -48,7 +48,9 @@ export class CreateProductService {
     price,
     promotion: inputPromotion,
   }: IRequest): Promise<IProduct> {
-    const restaurantExists = this.restaurantsRepository.findById(restaurantId);
+    const restaurantExists = await this.restaurantsRepository.findById(
+      restaurantId,
+    );
 
     if (!restaurantExists) {
       throw new AppError('Restaurant does not exist.', 400);
