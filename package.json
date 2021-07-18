@@ -18,6 +18,7 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "pg": "^8.6.0",
+    "pg-format": "^1.0.4",
     "reflect-metadata": "^0.1.13",
     "tsyringe": "^4.6.0",
     "uuid": "^8.3.2"
@@ -35,6 +36,7 @@
     "@types/hapi__joi": "^17.1.7",
     "@types/jest": "^26.0.24",
     "@types/pg": "^8.6.1",
+    "@types/pg-format": "^1.0.2",
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
