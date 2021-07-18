@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import 'express-async-errors';
 import '@shared/container';
 
+import { errors as celebrateErrors } from 'celebrate';
 import cors from 'cors';
 import express, { Request, Response, NextFunction } from 'express';
 
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use(routes);
 
+app.use(celebrateErrors());
 app.use((error: Error, req: Request, res: Response, _: NextFunction) => {
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({
