@@ -74,7 +74,7 @@ restaurantsRouter.put(
           number: Joi.number().required(),
         })
         .min(1),
-      workSchedule: Joi.object().keys({
+      workSchedules: Joi.object().keys({
         sunday: weekDayScheduleValidation,
         monday: weekDayScheduleValidation,
         tuesday: weekDayScheduleValidation,

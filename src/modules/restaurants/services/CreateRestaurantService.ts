@@ -1,6 +1,5 @@
 import { inject, injectable } from 'tsyringe';
 
-import { IAddress } from '@modules/addresses/models/IAddress';
 import { IAddressesRepository } from '@modules/addresses/repositories/IAddressesRepository';
 
 import { IRestaurant } from '../models/IRestaurant';
@@ -32,14 +31,14 @@ export class CreateRestaurantService {
     @inject('RestaurantsRepository')
     private restaurantsRepository: IRestaurantsRepository,
 
-    @inject('WorkSchedulesRepository')
-    private workSchedulesRepository: IWorkSchedulesRepository,
+    @inject('AddressesRepository')
+    private addressesRepository: IAddressesRepository,
 
     @inject('RestaurantAddressesRepository')
     private restaurantAddressesRepository: IRestaurantAddressesRepository,
 
-    @inject('AddressesRepository')
-    private addressesRepository: IAddressesRepository,
+    @inject('WorkSchedulesRepository')
+    private workSchedulesRepository: IWorkSchedulesRepository,
   ) {}
 
   public async execute({
@@ -55,15 +54,15 @@ export class CreateRestaurantService {
       );
 
       if (!address) {
-        address = {
+        address = await this.addressesRepository.create({
           postalCode: inputAddress.postalCode,
-          state: '',
-          city: '',
-          neighborhood: '',
-          street: '',
-          country: '',
-          countryCode: '',
-        } as IAddress;
+          state: 'a',
+          city: 'a',
+          neighborhood: 'a',
+          street: 'a',
+          country: 'a',
+          countryCode: 'a',
+        });
       }
 
       return { postalCode: address.postalCode, number: inputAddress.number };

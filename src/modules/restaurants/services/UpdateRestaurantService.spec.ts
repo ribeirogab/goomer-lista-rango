@@ -28,9 +28,9 @@ describe('UpdateRestaurantService', () => {
 
     updateRestaurantService = new UpdateRestaurantService(
       fakeRestaurantsRepository,
-      fakeWorkSchedulesRepository,
-      fakeRestaurantAddressesRepository,
       fakeAddressesRepository,
+      fakeRestaurantAddressesRepository,
+      fakeWorkSchedulesRepository,
     );
   });
 

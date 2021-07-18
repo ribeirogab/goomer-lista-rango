@@ -26,9 +26,9 @@ describe('CreateRestaurantService', () => {
 
     createRestaurantService = new CreateRestaurantService(
       fakeRestaurantsRepository,
-      fakeWorkSchedulesRepository,
-      fakeRestaurantAddressesRepository,
       fakeAddressesRepository,
+      fakeRestaurantAddressesRepository,
+      fakeWorkSchedulesRepository,
     );
   });
 

@@ -15,5 +15,5 @@ type WorkSchedules = {
 
 export interface IUpdateWorkScheduleByRestaurantIdDTO {
   restaurantId: string;
-  workSchedules?: WorkSchedules;
+  workSchedules: WorkSchedules;
 }
