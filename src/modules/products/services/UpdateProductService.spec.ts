@@ -1,5 +1,7 @@
 import 'reflect-metadata';
 
+import { AppError } from '@shared/errors/AppError';
+
 import { FakeCategoriesRepository } from '@modules/products/repositories/fakes/FakeCategoriesRepository';
 import { FakeProductsRepository } from '@modules/products/repositories/fakes/FakeProductsRepository';
 import { FakePromotionsRepository } from '@modules/products/repositories/fakes/FakePromotionsRepository';
@@ -75,8 +77,8 @@ describe('UpdateProductService', () => {
     });
 
     expect(productUpdated.id).toBe(oldProduct.id);
-    expect(productUpdated.category.id).toBe(categoryTwo.id);
-    expect(productUpdated.category.name).toBe(categoryTwo.name);
+    expect(productUpdated.category?.id).toBe(categoryTwo.id);
+    expect(productUpdated.category?.name).toBe(categoryTwo.name);
   });
 
   it('should be able to update the product category with a category not yet created', async () => {
@@ -101,7 +103,7 @@ describe('UpdateProductService', () => {
     });
 
     expect(productUpdated.id).toBe(oldProduct.id);
-    expect(productUpdated.category.name).toBe('Massas');
+    expect(productUpdated.category?.name).toBe('Massas');
   });
 
   it('should be able to update product promotion', async () => {
@@ -136,5 +138,15 @@ describe('UpdateProductService', () => {
     expect(productUpdated.promotion?.finishDatetime).toEqual(
       promotion.finishDatetime,
     );
+  });
+
+  it("should not be able to update product if it doesn't exist", async () => {
+    await expect(
+      updateProductService.execute({
+        restaurantId: 'any-id-for-test',
+        productId: 'any-id',
+        category: 'Massas',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
