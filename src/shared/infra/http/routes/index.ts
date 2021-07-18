@@ -1,9 +1,11 @@
 import { Router } from 'express';
 
+import { productsRouter } from '@modules/products/infra/http/routes/products.routes';
+import { restaurantsRouter } from '@modules/restaurants/infra/http/routes/restaurants.routes';
+
 const routes = Router();
 
-routes.get('/', (req, res) => {
-  return res.send('Hello Goomer! 💙');
-});
+routes.use('/restaurants', restaurantsRouter);
+routes.use('/products', productsRouter);
 
 export { routes };
