@@ -1,5 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
+import { IAddressProvider } from '@shared/container/providers/AddressProvider/models/IAddressProvider';
+
 import { IAddressesRepository } from '@modules/addresses/repositories/IAddressesRepository';
 
 import { IRestaurant } from '../models/IRestaurant';
@@ -39,6 +41,9 @@ export class CreateRestaurantService {
 
     @inject('WorkSchedulesRepository')
     private workSchedulesRepository: IWorkSchedulesRepository,
+
+    @inject('AddressProvider')
+    private AddressProvider: IAddressProvider,
   ) {}
 
   public async execute({
@@ -48,27 +53,11 @@ export class CreateRestaurantService {
   }: IRequest): Promise<IRestaurant> {
     const restaurant = await this.restaurantsRepository.create({ name });
 
-    const addressesPromises = inputAddresses.map(async inputAddress => {
-      let address = await this.addressesRepository.findByPostalCode(
-        inputAddress.postalCode,
-      );
-
-      if (!address) {
-        address = await this.addressesRepository.create({
-          postalCode: inputAddress.postalCode,
-          state: 'a',
-          city: 'a',
-          neighborhood: 'a',
-          street: 'a',
-          country: 'a',
-          countryCode: 'a',
-        });
-      }
-
-      return { postalCode: address.postalCode, number: inputAddress.number };
-    });
-
-    const addresses = await Promise.all(addressesPromises);
+    const addresses =
+      await this.AddressProvider.createAddressesIfItDoesNotExist({
+        addresses: inputAddresses,
+        addressesRepository: this.addressesRepository,
+      });
 
     const restaurantAddresses =
       await this.restaurantAddressesRepository.createMany({

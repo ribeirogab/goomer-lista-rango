@@ -2,12 +2,15 @@ import 'reflect-metadata';
 
 import { AppError } from '@shared/errors/AppError';
 
+import { FakeAddressProvider } from '@shared/container/providers/AddressProvider/fakes/FakeAddressProvider';
+
 import { FakeAddressesRepository } from '@modules/addresses/repositories/fakes/FakeAddressesRepository';
 import { FakeRestaurantAddressesRepository } from '@modules/restaurants/repositories/fakes/FakeRestaurantAddressesRepository';
 import { FakeRestaurantsRepository } from '@modules/restaurants/repositories/fakes/FakeRestaurantsRepository';
 import { FakeWorkSchedulesRepository } from '@modules/restaurants/repositories/fakes/FakeWorkSchedulesRepository';
 import { UpdateRestaurantService } from '@modules/restaurants/services/UpdateRestaurantService';
 
+let fakeAddressProvider: FakeAddressProvider;
 let fakeAddressesRepository: FakeAddressesRepository;
 let fakeRestaurantAddressesRepository: FakeRestaurantAddressesRepository;
 let fakeRestaurantsRepository: FakeRestaurantsRepository;
@@ -25,12 +28,14 @@ describe('UpdateRestaurantService', () => {
       fakeWorkSchedulesRepository,
       fakeRestaurantAddressesRepository,
     );
+    fakeAddressProvider = new FakeAddressProvider();
 
     updateRestaurantService = new UpdateRestaurantService(
       fakeRestaurantsRepository,
       fakeAddressesRepository,
       fakeRestaurantAddressesRepository,
       fakeWorkSchedulesRepository,
+      fakeAddressProvider,
     );
   });
 

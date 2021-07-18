@@ -2,6 +2,8 @@ import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '@shared/errors/AppError';
 
+import { IAddressProvider } from '@shared/container/providers/AddressProvider/models/IAddressProvider';
+
 import { IAddressesRepository } from '@modules/addresses/repositories/IAddressesRepository';
 
 import { IRestaurant } from '../models/IRestaurant';
@@ -46,6 +48,9 @@ export class UpdateRestaurantService {
 
     @inject('WorkSchedulesRepository')
     private workSchedulesRepository: IWorkSchedulesRepository,
+
+    @inject('AddressProvider')
+    private AddressProvider: IAddressProvider,
   ) {}
 
   public async execute({
@@ -63,28 +68,11 @@ export class UpdateRestaurantService {
     }
 
     if (inputAddresses) {
-      const addressesPromises = inputAddresses.map(async inputAddress => {
-        let address = await this.addressesRepository.findByPostalCode(
-          inputAddress.postalCode,
-        );
-
-        if (!address) {
-          address = await this.addressesRepository.create({
-            postalCode: inputAddress.postalCode,
-            state: '',
-            city: '',
-            neighborhood: '',
-            street: '',
-            country: '',
-            countryCode: '',
-          });
-        }
-
-        return { postalCode: address.postalCode, number: inputAddress.number };
-      });
-
-      const addresses = await Promise.all(addressesPromises);
-
+      const addresses =
+        await this.AddressProvider.createAddressesIfItDoesNotExist({
+          addresses: inputAddresses,
+          addressesRepository: this.addressesRepository,
+        });
       await this.restaurantAddressesRepository.updateByRestaurantId({
         restaurantId,
         addresses,
