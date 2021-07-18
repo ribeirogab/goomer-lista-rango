@@ -26,7 +26,7 @@ export class ProductEntity {
   public created_at: Date;
   public updated_at: Date;
 
-  private static setImageUrl(image: string | null): string | null {
+  public static setImageUrl(image: string | null): string | null {
     return image ? `${this.baseImageUrl}/${image}` : null;
   }
 

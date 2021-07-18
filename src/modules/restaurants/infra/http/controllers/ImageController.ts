@@ -10,11 +10,11 @@ export class ImageController {
 
     const updateRestaurantImage = container.resolve(UpdateRestaurantImage);
 
-    const updatedUser = await updateRestaurantImage.execute({
+    const updatedRestaurant = await updateRestaurantImage.execute({
       restaurantId,
       imageFilename,
     });
 
-    return res.json({ restaurant: updatedUser });
+    return res.json({ restaurant: updatedRestaurant });
   }
 }

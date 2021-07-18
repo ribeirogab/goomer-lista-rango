@@ -162,6 +162,7 @@ export class FakeProductsRepository implements IProductsRepository {
     restaurantId,
     categoryId,
     name,
+    image,
     price,
   }: IUpdateProductDTO): Promise<IProduct> {
     const productIndex = this.products.findIndex(
@@ -177,6 +178,7 @@ export class FakeProductsRepository implements IProductsRepository {
       ...this.products[productIndex],
       ...(categoryId ? { categoryId } : {}),
       ...(name ? { name } : {}),
+      ...(image ? { image } : {}),
       ...(price ? { price } : {}),
     };
 
