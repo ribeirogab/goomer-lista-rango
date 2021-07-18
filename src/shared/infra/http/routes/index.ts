@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
+import { restaurantsRouter } from '@modules/restaurants/infra/http/routes/restaurants.routes';
+
 const routes = Router();
 
-routes.get('/', (req, res) => {
-  return res.send('Hello Goomer! 💙');
-});
+routes.use('/restaurants', restaurantsRouter);
 
 export { routes };
