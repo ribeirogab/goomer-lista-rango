@@ -1,5 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
+import { AppError } from '@shared/errors/AppError';
+
 import { IProduct } from '@modules/products/models/IProduct';
 
 import { ICategoriesRepository } from '../repositories/ICategoriesRepository';
@@ -43,6 +45,15 @@ export class UpdateProductService {
     price,
     promotion,
   }: IRequest): Promise<IProduct> {
+    const productExists = await this.productsRepository.findOne({
+      restaurantId,
+      productId,
+    });
+
+    if (!productExists) {
+      throw new AppError('Product does not exist.', 400);
+    }
+
     let categoryId: string | null = null;
 
     if (categoryName) {
@@ -68,13 +79,13 @@ export class UpdateProductService {
       });
     }
 
-    const updatedProduct = await this.productsRepository.update({
+    const updatedProduct = (await this.productsRepository.update({
       restaurantId,
       productId,
       name,
       price,
       ...(categoryId ? { categoryId } : {}),
-    });
+    })) as IProduct;
 
     return updatedProduct;
   }

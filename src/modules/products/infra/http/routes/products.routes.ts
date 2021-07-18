@@ -59,6 +59,19 @@ productsRouter.put(
       restaurantId: Joi.string().required(),
       productId: Joi.string().required(),
     },
+    [Segments.BODY]: Joi.object()
+      .keys({
+        name: Joi.string(),
+        price: Joi.number(),
+        category: Joi.string(),
+        promotion: Joi.object().keys({
+          description: Joi.string(),
+          price: Joi.number().required(),
+          startDatetime: Joi.date().required(),
+          finishDatetime: Joi.date().required(),
+        }),
+      })
+      .min(1),
   }),
   productsController.update,
 );
