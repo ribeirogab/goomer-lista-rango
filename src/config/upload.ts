@@ -15,11 +15,21 @@ interface IUploadConfig {
   };
 }
 
+function createSlug(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/(\s+)/g, '-')
+    .replace(/--+/g, '-')
+    .replace(/(^-+|-+$)/, '');
+}
+
 const multerStorage = multer.diskStorage({
   destination: tmpFolder,
   filename(req, file, callback) {
     const fileHash = crypto.randomBytes(10).toString('hex');
-    const fileName = `${fileHash}-${file.originalname}`;
+    const fileName = `${fileHash}-${createSlug(file.originalname)}`;
 
     return callback(null, fileName);
   },
