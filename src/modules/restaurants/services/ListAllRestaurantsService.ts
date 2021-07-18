@@ -1,5 +1,10 @@
 import { inject, injectable } from 'tsyringe';
 
+import {
+  IPaginationProvider,
+  PageInfo,
+} from '@shared/container/providers/PaginationProvider/models/IPaginationProvider';
+
 import { IRestaurant } from '../models/IRestaurant';
 import { IRestaurantsRepository } from '../repositories/IRestaurantsRepository';
 
@@ -9,8 +14,8 @@ interface IRequest {
 }
 
 interface IResponse {
+  pageInfo: PageInfo;
   restaurants: IRestaurant[];
-  count: number;
 }
 
 @injectable()
@@ -18,6 +23,9 @@ export class ListAllRestaurantsService {
   constructor(
     @inject('RestaurantsRepository')
     private restaurantsRepository: IRestaurantsRepository,
+
+    @inject('PaginationProvider')
+    private paginationProvider: IPaginationProvider,
   ) {}
 
   public async execute({
@@ -29,6 +37,12 @@ export class ListAllRestaurantsService {
       perPage,
     });
 
-    return { count, restaurants };
+    const pageInfo = this.paginationProvider.getPageInfo({
+      currentPage: page,
+      perPage,
+      total: count,
+    });
+
+    return { pageInfo, restaurants };
   }
 }

@@ -31,12 +31,12 @@ export class RestaurantsController {
       ListAllRestaurantsService,
     );
 
-    const { count, restaurants } = await listAllRestaurantsService.execute({
+    const { pageInfo, restaurants } = await listAllRestaurantsService.execute({
       page: page as number | undefined,
       perPage: perPage as number | undefined,
     });
 
-    return res.json({ count, restaurants });
+    return res.json({ pageInfo, restaurants });
   }
 
   public async show(req: Request, res: Response): Promise<Response> {
