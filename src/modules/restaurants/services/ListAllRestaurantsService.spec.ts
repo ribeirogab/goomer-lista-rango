@@ -1,11 +1,14 @@
 import 'reflect-metadata';
 
+import { FakePaginationProvider } from '@shared/container/providers/PaginationProvider/fakes/FakePaginationProvider';
+
 import { FakeAddressesRepository } from '@modules/addresses/repositories/fakes/FakeAddressesRepository';
 import { FakeRestaurantAddressesRepository } from '@modules/restaurants/repositories/fakes/FakeRestaurantAddressesRepository';
 import { FakeRestaurantsRepository } from '@modules/restaurants/repositories/fakes/FakeRestaurantsRepository';
 import { FakeWorkSchedulesRepository } from '@modules/restaurants/repositories/fakes/FakeWorkSchedulesRepository';
 import { ListAllRestaurantsService } from '@modules/restaurants/services/ListAllRestaurantsService';
 
+let fakePaginationProvider: FakePaginationProvider;
 let fakeAddressesRepository: FakeAddressesRepository;
 let fakeRestaurantAddressesRepository: FakeRestaurantAddressesRepository;
 let fakeRestaurantsRepository: FakeRestaurantsRepository;
@@ -23,9 +26,11 @@ describe('ListAllRestaurantsService', () => {
       fakeWorkSchedulesRepository,
       fakeRestaurantAddressesRepository,
     );
+    fakePaginationProvider = new FakePaginationProvider();
 
     listAllRestaurantsService = new ListAllRestaurantsService(
       fakeRestaurantsRepository,
+      fakePaginationProvider,
     );
   });
 
