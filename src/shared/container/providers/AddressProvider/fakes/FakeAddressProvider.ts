@@ -7,7 +7,7 @@ export class FakeAddressProvider implements IAddressProvider {
     addressesRepository,
     addresses: informedAddresses,
   }: ICreateAddressesIfItDoesNotExistDTO): Promise<
-    { postalCode: string; number: number }[]
+    { postalCode: string; number: string }[]
   > {
     const addressesPromises = informedAddresses.map(async informedAddress => {
       let address = await addressesRepository.findByPostalCode(

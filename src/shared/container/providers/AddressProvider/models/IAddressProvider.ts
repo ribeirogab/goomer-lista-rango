@@ -8,7 +8,7 @@ export interface IAddressProvider {
   }: ICreateAddressesIfItDoesNotExistDTO): Promise<
     {
       postalCode: string;
-      number: number;
+      number: string;
     }[]
   >;
 

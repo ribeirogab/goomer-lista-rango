@@ -4,6 +4,6 @@ export interface ICreateAddressesIfItDoesNotExistDTO {
   addressesRepository: IAddressesRepository;
   addresses: {
     postalCode: string;
-    number: number;
+    number: string;
   }[];
 }
