@@ -15,7 +15,10 @@ export interface IProductsRepository {
     restaurantId,
     page,
     perPage,
-  }: IFindProductsByRestaurantIdDTO): Promise<IProduct[]>;
+  }: IFindProductsByRestaurantIdDTO): Promise<{
+    count: number;
+    products: IProduct[];
+  }>;
 
   findOne({
     restaurantId,

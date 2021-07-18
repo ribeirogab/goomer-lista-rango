@@ -77,7 +77,10 @@ export class FakeProductsRepository implements IProductsRepository {
     restaurantId,
     page,
     perPage,
-  }: IFindProductsByRestaurantIdDTO): Promise<IProduct[]> {
+  }: IFindProductsByRestaurantIdDTO): Promise<{
+    count: number;
+    products: IProduct[];
+  }> {
     const foundProducts = this.products.filter(
       product => product.restaurantId === restaurantId,
     );
@@ -114,7 +117,7 @@ export class FakeProductsRepository implements IProductsRepository {
 
     const products = await Promise.all(productsPromises);
 
-    return products;
+    return { count: this.products.length, products };
   }
 
   public async findOne({

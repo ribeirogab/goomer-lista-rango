@@ -62,29 +62,17 @@ export class FakePromotionsRepository implements IPromotionsRepository {
     startDatetime,
     finishDatetime,
   }: IUpdatePromotionByProductIdDTO): Promise<IPromotion | null> {
-    const promotionIndex = this.promotions.findIndex(
-      promotion => promotion.productId === productId,
+    this.promotions = this.promotions.filter(
+      promotion => promotion.productId !== productId,
     );
 
-    if (promotionIndex === -1) {
-      return null;
-    }
-
-    this.promotions[promotionIndex] = {
-      ...this.promotions[promotionIndex],
-      ...(description ? { description } : {}),
-      ...(price ? { price } : {}),
-      ...(startDatetime ? { startDatetime } : {}),
-      ...(finishDatetime ? { finishDatetime } : {}),
-    };
-
-    const formattedPromotion: IPromotion = {
-      id: this.promotions[promotionIndex].id,
-      description: this.promotions[promotionIndex].description,
-      price: this.promotions[promotionIndex].price,
-      startDatetime: this.promotions[promotionIndex].startDatetime,
-      finishDatetime: this.promotions[promotionIndex].finishDatetime,
-    };
+    const formattedPromotion = await this.create({
+      productId,
+      description,
+      price,
+      startDatetime,
+      finishDatetime,
+    });
 
     return formattedPromotion;
   }
