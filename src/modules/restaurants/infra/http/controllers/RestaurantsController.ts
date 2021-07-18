@@ -5,6 +5,7 @@ import { CreateRestaurantService } from '@modules/restaurants/services/CreateRes
 import { DeleteRestaurantService } from '@modules/restaurants/services/DeleteRestaurantService';
 import { ListAllRestaurantsService } from '@modules/restaurants/services/ListAllRestaurantsService';
 import { ListOneRestaurantService } from '@modules/restaurants/services/ListOneRestaurantService';
+import { UpdateRestaurantService } from '@modules/restaurants/services/UpdateRestaurantService';
 
 export class RestaurantsController {
   public async create(req: Request, res: Response): Promise<Response> {
@@ -54,14 +55,16 @@ export class RestaurantsController {
 
   public async update(req: Request, res: Response): Promise<Response> {
     const { restaurantId } = req.params;
-    const { name, addresses, workSchedule } = req.body;
+    const { name, addresses, workSchedules } = req.body;
 
-    const restaurant = {
-      id: restaurantId,
-      name: name ?? 'old name',
-      addresses: addresses ?? [{ postalCode: '18279350', number: 99 }],
-      workSchedule: workSchedule ?? null,
-    };
+    const updateRestaurantService = container.resolve(UpdateRestaurantService);
+
+    const restaurant = await updateRestaurantService.execute({
+      restaurantId,
+      name,
+      addresses,
+      workSchedules,
+    });
 
     return res.json({ restaurant });
   }
