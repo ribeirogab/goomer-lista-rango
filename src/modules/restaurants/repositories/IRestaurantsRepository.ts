@@ -1,5 +1,6 @@
 import { IRestaurant } from '../models/IRestaurant';
 import { IFindAllRestaurantsDTO } from './dtos/IFindAllRestaurantsDTO';
+import { IUpdateRestaurantByIdDTO } from './dtos/IUpdateRestaurantByIdDTO';
 
 export interface IRestaurantsRepository {
   create({
@@ -17,7 +18,7 @@ export interface IRestaurantsRepository {
 
   updateById(
     restaurantId: string,
-    { name }: { name?: string },
+    { name, image }: IUpdateRestaurantByIdDTO,
   ): Promise<IRestaurant | null>;
 
   deleteById(restaurantId: string): Promise<void>;

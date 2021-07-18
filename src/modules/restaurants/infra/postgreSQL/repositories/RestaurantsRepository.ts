@@ -6,6 +6,7 @@ import { connection } from '@shared/infra/databases/postgreSQL/connection';
 import { IRestaurant } from '@modules/restaurants/models/IRestaurant';
 import { IRestaurantAddress } from '@modules/restaurants/models/IRestaurantAddress';
 import { IFindAllRestaurantsDTO } from '@modules/restaurants/repositories/dtos/IFindAllRestaurantsDTO';
+import { IUpdateRestaurantByIdDTO } from '@modules/restaurants/repositories/dtos/IUpdateRestaurantByIdDTO';
 import { IRestaurantsRepository } from '@modules/restaurants/repositories/IRestaurantsRepository';
 
 import { RestaurantEntity } from '../entities/RestaurantEntity';
@@ -193,7 +194,7 @@ export class RestaurantsRepository implements IRestaurantsRepository {
 
   public async updateById(
     restaurantId: string,
-    { name }: { name?: string | undefined },
+    { name, image }: IUpdateRestaurantByIdDTO,
   ): Promise<IRestaurant | null> {
     if (!this.isValidId(restaurantId)) {
       return null;
@@ -201,13 +202,31 @@ export class RestaurantsRepository implements IRestaurantsRepository {
 
     const { pool } = connection('RestaurantsRepository.updateById');
 
-    if (name) {
+    const values: string[] = [];
+    let query = '';
+
+    const possibleValuesToBeUpdated = [{ name }, { image }];
+
+    possibleValuesToBeUpdated.forEach(objectValue => {
+      const value = Object.values(objectValue)[0];
+
+      if (value) {
+        const key = Object.keys(objectValue)[0];
+
+        query += `${values.length > 0 ? ', ' : 'SET '}${key} = $${
+          values.length + 2
+        }`;
+        values.push(value);
+      }
+    });
+
+    if (query !== '') {
       await pool.query(
         `UPDATE ${this.entity.table}
-        SET name = $1,
+          ${query},
           updated_at = now()
-        WHERE id = $2`,
-        [name, restaurantId],
+        WHERE id = $1`,
+        [restaurantId, ...values],
       );
     }
 
