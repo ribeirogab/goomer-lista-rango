@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:alpine
+    container_name: goomerListaRangoAPI_development
+    working_dir: /app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development_environment
+    command: yarn dev
+    ports:
+      - 3333:3333
+    volumes:
+      - .:/app
