@@ -84,7 +84,7 @@ export class CreateProductService {
       });
     }
 
-    const formattedProduct = {
+    const formattedProduct: IProduct = {
       ...product,
       category,
       promotion,
