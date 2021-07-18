@@ -9,7 +9,7 @@ export interface IProduct {
   price: number;
 
   // relations
-  category: ICategory;
+  category: ICategory | null;
   promotion: IPromotion | null;
 
   createdAt: Date;

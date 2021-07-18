@@ -34,7 +34,7 @@ export interface IProductsRepository {
     categoryId,
     name,
     price,
-  }: IUpdateProductDTO): Promise<IProduct>;
+  }: IUpdateProductDTO): Promise<IProduct | null>;
 
   delete({
     restaurantId,
