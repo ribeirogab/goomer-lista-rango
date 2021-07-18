@@ -6,6 +6,8 @@ import { errors as celebrateErrors } from 'celebrate';
 import cors from 'cors';
 import express, { Request, Response, NextFunction } from 'express';
 
+import { uploadConfig } from '@config/upload';
+
 import { AppError } from '@shared/errors/AppError';
 
 import { routes } from './routes';
@@ -16,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(routes);
+app.use('/files', express.static(uploadConfig.uploadsFolder));
 
 app.use(celebrateErrors());
 app.use((error: Error, req: Request, res: Response, _: NextFunction) => {

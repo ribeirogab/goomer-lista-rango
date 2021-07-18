@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { IRestaurant } from '@modules/restaurants/models/IRestaurant';
 
 import { IFindAllRestaurantsDTO } from '../dtos/IFindAllRestaurantsDTO';
+import { IUpdateRestaurantByIdDTO } from '../dtos/IUpdateRestaurantByIdDTO';
 import { IRestaurantsRepository } from '../IRestaurantsRepository';
 import { FakeRestaurantAddressesRepository } from './FakeRestaurantAddressesRepository';
 import { FakeWorkSchedulesRepository } from './FakeWorkSchedulesRepository';
@@ -127,7 +128,7 @@ export class FakeRestaurantsRepository implements IRestaurantsRepository {
 
   public async updateById(
     restaurantId: string,
-    { name }: { name: string },
+    { name, image }: IUpdateRestaurantByIdDTO,
   ): Promise<IRestaurant> {
     const restaurantIndex = this.restaurants.findIndex(
       restaurant => restaurant.id === restaurantId,
@@ -137,7 +138,13 @@ export class FakeRestaurantsRepository implements IRestaurantsRepository {
       throw new Error('Restaurant does not exist.');
     }
 
-    this.restaurants[restaurantIndex].name = name;
+    if (name) {
+      this.restaurants[restaurantIndex].name = name;
+    }
+
+    if (image) {
+      this.restaurants[restaurantIndex].image = image;
+    }
 
     const restaurant = (await this.findById(restaurantId)) as IRestaurant;
 

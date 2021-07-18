@@ -64,7 +64,7 @@ describe('CreateProductService', () => {
     });
 
     expect(product).toHaveProperty('id');
-    expect(product.category.name).toBe('Salgados');
+    expect(product.category?.name).toBe('Salgados');
     expect(product.price).toBe(1.99);
   });
 
@@ -89,7 +89,7 @@ describe('CreateProductService', () => {
     });
 
     expect(product).toHaveProperty('id');
-    expect(product.category.name).toBe('Salgados');
+    expect(product.category?.name).toBe('Salgados');
     expect(product.price).toBe(2.0);
     expect(product.promotion?.price).toBe(promotion.price);
     expect(product.promotion?.description).toBe(promotion.description);

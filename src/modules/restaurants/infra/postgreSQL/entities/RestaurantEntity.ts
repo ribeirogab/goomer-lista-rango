@@ -19,7 +19,7 @@ export class RestaurantEntity {
     restaurantAddresses: RestaurantAddressEntity,
     workSchedules: WorkScheduleEntity,
   };
-  public static baseImageUrl = 'http://localhost:3333';
+  public static baseImageUrl = 'http://localhost:3333/files';
 
   public id: string;
   public name: string;

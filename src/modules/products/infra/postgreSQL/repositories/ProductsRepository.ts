@@ -53,7 +53,7 @@ export class ProductsRepository implements IProductsRepository {
   }> {
     const { pool } = connection('ProductsRepository.findAll');
 
-    const { rows: products } = await pool.query<IProduct>(
+    const { rows } = await pool.query<Omit<IProduct, 'imageUrl'>>(
       `SELECT
         p.id, p.name, p.price::float, p.image,
         (CASE WHEN
@@ -92,6 +92,11 @@ export class ProductsRepository implements IProductsRepository {
       [restaurantId, (page - 1) * perPage, perPage],
     );
 
+    const productsWithImageUrl: IProduct[] = rows.map(product => ({
+      ...product,
+      imageUrl: this.entity.setImageUrl(product.image),
+    }));
+
     const { count } = (
       await pool.query<{ count: string }>(
         `SELECT count(*) AS count FROM ${this.entity.table}
@@ -100,7 +105,7 @@ export class ProductsRepository implements IProductsRepository {
       )
     ).rows[0];
 
-    return { count: Number(count), products };
+    return { count: Number(count), products: productsWithImageUrl };
   }
 
   public async findOne(
@@ -115,7 +120,7 @@ export class ProductsRepository implements IProductsRepository {
   ): Promise<IProduct | null> {
     const pool = sharedPool ?? connection('ProductsRepository.findAll').pool;
 
-    const { rows } = await pool.query<IProduct>(
+    const { rows } = await pool.query<Omit<IProduct, 'imageUrl'>>(
       `SELECT
         p.id, p.name, p.price::float, p.image,
         (CASE WHEN
@@ -158,7 +163,10 @@ export class ProductsRepository implements IProductsRepository {
       return null;
     }
 
-    const product = rows[0];
+    const product: IProduct = {
+      ...rows[0],
+      imageUrl: this.entity.setImageUrl(rows[0].image),
+    };
 
     return product;
   }
@@ -168,6 +176,7 @@ export class ProductsRepository implements IProductsRepository {
     productId,
     categoryId,
     name,
+    image,
     price,
   }: IUpdateProductDTO): Promise<IProduct | null> {
     const { pool } = connection('ProductsRepository.update');
@@ -175,6 +184,7 @@ export class ProductsRepository implements IProductsRepository {
     const possibleValuesToBeUpdated = [
       { category_id: categoryId },
       { name },
+      { image },
       { price },
     ];
 
