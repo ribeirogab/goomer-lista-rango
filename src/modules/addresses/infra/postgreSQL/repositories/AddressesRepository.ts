@@ -1,5 +1,3 @@
-import { Pool } from 'pg';
-
 import { connection } from '@shared/infra/databases/postgreSQL/connection';
 
 import { IAddress } from '@modules/addresses/models/IAddress';
@@ -10,11 +8,9 @@ import { AddressEntity } from '../entities/AddressEntity';
 
 export class AddressesRepository implements IAddressesRepository {
   private entity: typeof AddressEntity;
-  private pool: Pool;
 
   constructor() {
     this.entity = AddressEntity;
-    this.pool = connection('AddressRepository').pool;
   }
 
   public async create({
@@ -26,7 +22,9 @@ export class AddressesRepository implements IAddressesRepository {
     country,
     countryCode,
   }: ICreateAddressDTO): Promise<IAddress> {
-    const { rows } = await this.pool.query<AddressEntity>(
+    const { pool } = connection('AddressRepository.create');
+
+    const { rows } = await pool.query<AddressEntity>(
       `INSERT INTO ${this.entity.table}
       (postal_code, state, city, neighborhood, street, country, country_code)
       VALUES($1, $2, $3, $4, $5, $6, $7)
@@ -40,7 +38,9 @@ export class AddressesRepository implements IAddressesRepository {
   }
 
   public async findByPostalCode(postalCode: string): Promise<IAddress | null> {
-    const { rows } = await this.pool.query<IAddress>(
+    const { pool } = connection('AddressRepository.findByPostalCode');
+
+    const { rows } = await pool.query<IAddress>(
       `SELECT
       postal_code AS "postalCode",
       state, city, neighborhood, street, country,
