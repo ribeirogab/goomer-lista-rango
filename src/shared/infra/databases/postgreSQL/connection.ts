@@ -4,17 +4,33 @@ import { Pool } from 'pg';
 import { AppError } from '@shared/errors/AppError';
 
 export function connection(name?: string): { pool: Pool } {
+  if (
+    !process.env.POSTGRESQL_APPLICATION_NAME ||
+    !process.env.POSTGRESQL_HOST ||
+    !process.env.POSTGRESQL_DATABASE ||
+    !process.env.POSTGRESQL_PORT ||
+    !process.env.POSTGRESQL_USER ||
+    !process.env.POSTGRESQL_PASSWORD ||
+    !process.env.POSTGRESQL_MAX ||
+    !process.env.POSTGRESQL_CONNECTION_TIMEOUT_MILLIS ||
+    !process.env.POSTGRESQL_IDLE_TIMEOUT_MILLIS
+  ) {
+    throw new AppError('Environment variables are missing.', 500);
+  }
+
   try {
     const pool = new Pool({
-      application_name: 'postgres',
-      host: 'goomerListaRangoDB_development',
-      database: 'goomer_lista_rango',
-      port: 5432,
-      user: 'postgres',
-      password: 'postgres',
-      max: 5,
-      connectionTimeoutMillis: 5000,
-      idleTimeoutMillis: 30000,
+      application_name: process.env.POSTGRESQL_APPLICATION_NAME,
+      host: process.env.POSTGRESQL_HOST,
+      database: process.env.POSTGRESQL_DATABASE,
+      port: Number(process.env.POSTGRESQL_PORT),
+      user: process.env.POSTGRESQL_USER,
+      password: process.env.POSTGRESQL_PASSWORD,
+      max: Number(process.env.POSTGRESQL_MAX),
+      connectionTimeoutMillis: Number(
+        process.env.POSTGRESQL_CONNECTION_TIMEOUT_MILLIS,
+      ),
+      idleTimeoutMillis: Number(process.env.POSTGRESQL_IDLE_TIMEOUT_MILLIS),
     });
 
     console.log(

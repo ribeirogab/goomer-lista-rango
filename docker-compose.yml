@@ -2,27 +2,28 @@ version: '3.8'
 
 services:
   database:
-    image: postgres
-    container_name: goomerListaRangoDB_development
+    image: bitnami/postgresql:latest
+    container_name: goomerListaRangoDB_production
     restart: always
     ports:
-      - 5432:5432
+      - ${POSTGRESQL_PORT}:5432
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: goomer_lista_rango
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${POSTGRESQL_DATABASE}
     volumes:
       - ./src/shared/infra/databases/postgreSQL/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   app:
-    image: node:alpine
-    container_name: goomerListaRangoAPI_development
+    image: node:14
+    container_name: goomerListaRangoAPI_production
     working_dir: /app
     build:
       context: .
       dockerfile: Dockerfile
-      target: development_environment
-    command: yarn dev
+      target: production_environment
+    command:
+      sh -c "yarn build && yarn start"
     ports:
       - 3333:3333
     volumes:
