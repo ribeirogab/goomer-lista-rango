@@ -1,9 +1,13 @@
 import 'reflect-metadata';
 
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+
 import { FakeCategoriesRepository } from '@modules/products/repositories/fakes/FakeCategoriesRepository';
 import { FakeProductsRepository } from '@modules/products/repositories/fakes/FakeProductsRepository';
 import { FakePromotionsRepository } from '@modules/products/repositories/fakes/FakePromotionsRepository';
 import { DeleteProductService } from '@modules/products/services/DeleteProductService';
+
+let fakeCacheProvider: FakeCacheProvider;
 
 let fakeCategoriesRepository: FakeCategoriesRepository;
 let fakeProductsRepository: FakeProductsRepository;
@@ -18,8 +22,12 @@ describe('DeleteProductService', () => {
       fakePromotionsRepository,
       fakeCategoriesRepository,
     );
+    fakeCacheProvider = new FakeCacheProvider();
 
-    deleteProductService = new DeleteProductService(fakeProductsRepository);
+    deleteProductService = new DeleteProductService(
+      fakeProductsRepository,
+      fakeCacheProvider,
+    );
   });
 
   it('should be able to delete product', async () => {

@@ -2,16 +2,21 @@ import 'reflect-metadata';
 
 import { AppError } from '@shared/errors/AppError';
 
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+
 import { FakeAddressesRepository } from '@modules/addresses/repositories/fakes/FakeAddressesRepository';
 import { FakeRestaurantAddressesRepository } from '@modules/restaurants/repositories/fakes/FakeRestaurantAddressesRepository';
 import { FakeRestaurantsRepository } from '@modules/restaurants/repositories/fakes/FakeRestaurantsRepository';
 import { FakeWorkSchedulesRepository } from '@modules/restaurants/repositories/fakes/FakeWorkSchedulesRepository';
 import { ListOneRestaurantService } from '@modules/restaurants/services/ListOneRestaurantService';
 
+let fakeCacheProvider: FakeCacheProvider;
+
 let fakeAddressesRepository: FakeAddressesRepository;
 let fakeRestaurantAddressesRepository: FakeRestaurantAddressesRepository;
 let fakeRestaurantsRepository: FakeRestaurantsRepository;
 let fakeWorkSchedulesRepository: FakeWorkSchedulesRepository;
+
 let listOneRestaurantService: ListOneRestaurantService;
 
 describe('ListOneRestaurantService', () => {
@@ -25,9 +30,11 @@ describe('ListOneRestaurantService', () => {
       fakeWorkSchedulesRepository,
       fakeRestaurantAddressesRepository,
     );
+    fakeCacheProvider = new FakeCacheProvider();
 
     listOneRestaurantService = new ListOneRestaurantService(
       fakeRestaurantsRepository,
+      fakeCacheProvider,
     );
   });
 

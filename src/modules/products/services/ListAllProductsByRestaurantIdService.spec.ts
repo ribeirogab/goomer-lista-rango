@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import { FakePaginationProvider } from '@shared/container/providers/PaginationProvider/fakes/FakePaginationProvider';
 
 import { FakeCategoriesRepository } from '@modules/products/repositories/fakes/FakeCategoriesRepository';
@@ -7,10 +8,12 @@ import { FakeProductsRepository } from '@modules/products/repositories/fakes/Fak
 import { FakePromotionsRepository } from '@modules/products/repositories/fakes/FakePromotionsRepository';
 import { ListAllProductsByRestaurantIdService } from '@modules/products/services/ListAllProductsByRestaurantIdService';
 
+let fakeCacheProvider: FakeCacheProvider;
+let fakePaginationProvider: FakePaginationProvider;
+
 let fakeCategoriesRepository: FakeCategoriesRepository;
 let fakeProductsRepository: FakeProductsRepository;
 let fakePromotionsRepository: FakePromotionsRepository;
-let fakePaginationProvider: FakePaginationProvider;
 let listAllProductsByRestaurantIdService: ListAllProductsByRestaurantIdService;
 
 describe('ListAllProductsByRestaurantIdService', () => {
@@ -21,11 +24,13 @@ describe('ListAllProductsByRestaurantIdService', () => {
       fakePromotionsRepository,
       fakeCategoriesRepository,
     );
+    fakeCacheProvider = new FakeCacheProvider();
     fakePaginationProvider = new FakePaginationProvider();
 
     listAllProductsByRestaurantIdService =
       new ListAllProductsByRestaurantIdService(
         fakeProductsRepository,
+        fakeCacheProvider,
         fakePaginationProvider,
       );
   });

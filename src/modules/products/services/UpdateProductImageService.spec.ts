@@ -2,13 +2,15 @@ import 'reflect-metadata';
 
 import { AppError } from '@shared/errors/AppError';
 
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import { FakeStorageProvider } from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
 
 import { FakeCategoriesRepository } from '@modules/products/repositories/fakes/FakeCategoriesRepository';
 import { FakeProductsRepository } from '@modules/products/repositories/fakes/FakeProductsRepository';
 import { FakePromotionsRepository } from '@modules/products/repositories/fakes/FakePromotionsRepository';
-import { UpdateProductImage } from '@modules/products/services/UpdateProductImage';
+import { UpdateProductImageService } from '@modules/products/services/UpdateProductImageService';
 
+let fakeCacheProvider: FakeCacheProvider;
 let fakeStorageProvider: FakeStorageProvider;
 
 let fakeCategoriesRepository: FakeCategoriesRepository;
@@ -16,20 +18,22 @@ let fakeProductsRepository: FakeProductsRepository;
 let fakePromotionsRepository: FakePromotionsRepository;
 let restaurantId: string;
 
-let updateProductImage: UpdateProductImage;
+let updateProductImageService: UpdateProductImageService;
 
-describe('UpdateProductImage', () => {
+describe('UpdateProductImageService', () => {
   beforeEach(() => {
-    fakeStorageProvider = new FakeStorageProvider();
     fakePromotionsRepository = new FakePromotionsRepository();
     fakeCategoriesRepository = new FakeCategoriesRepository();
     fakeProductsRepository = new FakeProductsRepository(
       fakePromotionsRepository,
       fakeCategoriesRepository,
     );
+    fakeCacheProvider = new FakeCacheProvider();
+    fakeStorageProvider = new FakeStorageProvider();
 
-    updateProductImage = new UpdateProductImage(
+    updateProductImageService = new UpdateProductImageService(
       fakeProductsRepository,
+      fakeCacheProvider,
       fakeStorageProvider,
     );
 
@@ -44,7 +48,7 @@ describe('UpdateProductImage', () => {
       categoryId: 'any-id',
     });
 
-    const updatedProduct = await updateProductImage.execute({
+    const updatedProduct = await updateProductImageService.execute({
       restaurantId,
       productId: product.id,
       imageFilename: 'marmita.jpg',
@@ -64,13 +68,13 @@ describe('UpdateProductImage', () => {
       restaurantId,
     });
 
-    await updateProductImage.execute({
+    await updateProductImageService.execute({
       restaurantId,
       productId: product.id,
       imageFilename: 'marmita.jpg',
     });
 
-    await updateProductImage.execute({
+    await updateProductImageService.execute({
       restaurantId,
       productId: product.id,
       imageFilename: 'marmita-2.jpg',
@@ -81,7 +85,7 @@ describe('UpdateProductImage', () => {
 
   it('should not be able to update image from non existing product (or wrong id)', async () => {
     await expect(
-      updateProductImage.execute({
+      updateProductImageService.execute({
         restaurantId,
         productId: 'any-id',
         imageFilename: 'marmita.jpg',
@@ -98,7 +102,7 @@ describe('UpdateProductImage', () => {
     });
 
     await expect(
-      updateProductImage.execute({
+      updateProductImageService.execute({
         restaurantId,
         productId: product.id,
       }),

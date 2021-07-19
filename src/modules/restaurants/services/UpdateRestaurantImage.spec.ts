@@ -2,25 +2,28 @@ import 'reflect-metadata';
 
 import { AppError } from '@shared/errors/AppError';
 
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import { FakeStorageProvider } from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
 
 import { FakeAddressesRepository } from '@modules/addresses/repositories/fakes/FakeAddressesRepository';
+import { FakeRestaurantAddressesRepository } from '@modules/restaurants//repositories/fakes/FakeRestaurantAddressesRepository';
+import { FakeWorkSchedulesRepository } from '@modules/restaurants//repositories/fakes/FakeWorkSchedulesRepository';
 import { FakeRestaurantsRepository } from '@modules/restaurants/repositories/fakes/FakeRestaurantsRepository';
 
-import { FakeRestaurantAddressesRepository } from '../repositories/fakes/FakeRestaurantAddressesRepository';
-import { FakeWorkSchedulesRepository } from '../repositories/fakes/FakeWorkSchedulesRepository';
-import { UpdateRestaurantImage } from './UpdateRestaurantImage';
+import { UpdateRestaurantImageService } from './UpdateRestaurantImageService';
 
+let fakeCacheProvider: FakeCacheProvider;
 let fakeStorageProvider: FakeStorageProvider;
+
 let fakeAddressesRepository: FakeAddressesRepository;
 let fakeRestaurantAddressesRepository: FakeRestaurantAddressesRepository;
 let fakeRestaurantsRepository: FakeRestaurantsRepository;
 let fakeWorkSchedulesRepository: FakeWorkSchedulesRepository;
-let updateRestaurantImage: UpdateRestaurantImage;
 
-describe('UpdateRestaurantImage', () => {
+let updateRestaurantImageService: UpdateRestaurantImageService;
+
+describe('UpdateRestaurantImageService', () => {
   beforeEach(() => {
-    fakeStorageProvider = new FakeStorageProvider();
     fakeAddressesRepository = new FakeAddressesRepository();
     fakeWorkSchedulesRepository = new FakeWorkSchedulesRepository();
     fakeRestaurantAddressesRepository = new FakeRestaurantAddressesRepository(
@@ -30,9 +33,12 @@ describe('UpdateRestaurantImage', () => {
       fakeWorkSchedulesRepository,
       fakeRestaurantAddressesRepository,
     );
+    fakeCacheProvider = new FakeCacheProvider();
+    fakeStorageProvider = new FakeStorageProvider();
 
-    updateRestaurantImage = new UpdateRestaurantImage(
+    updateRestaurantImageService = new UpdateRestaurantImageService(
       fakeRestaurantsRepository,
+      fakeCacheProvider,
       fakeStorageProvider,
     );
   });
@@ -42,7 +48,7 @@ describe('UpdateRestaurantImage', () => {
       name: 'Goomer Lista Rango',
     });
 
-    const updatedRestaurant = await updateRestaurantImage.execute({
+    const updatedRestaurant = await updateRestaurantImageService.execute({
       restaurantId: restaurant.id,
       imageFilename: 'example.jpg',
     });
@@ -58,12 +64,12 @@ describe('UpdateRestaurantImage', () => {
       name: 'Goomer Lista Rango',
     });
 
-    await updateRestaurantImage.execute({
+    await updateRestaurantImageService.execute({
       restaurantId: restaurant.id,
       imageFilename: 'example.jpg',
     });
 
-    await updateRestaurantImage.execute({
+    await updateRestaurantImageService.execute({
       restaurantId: restaurant.id,
       imageFilename: 'example-2.jpg',
     });
@@ -73,7 +79,7 @@ describe('UpdateRestaurantImage', () => {
 
   it('should not be able to update image from non existing restaurant (or wrong id)', async () => {
     await expect(
-      updateRestaurantImage.execute({
+      updateRestaurantImageService.execute({
         restaurantId: 'any-id',
         imageFilename: 'example.jpg',
       }),
@@ -86,7 +92,7 @@ describe('UpdateRestaurantImage', () => {
     });
 
     await expect(
-      updateRestaurantImage.execute({
+      updateRestaurantImageService.execute({
         restaurantId: restaurant.id,
       }),
     ).rejects.toBeInstanceOf(AppError);

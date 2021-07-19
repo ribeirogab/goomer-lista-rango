@@ -2,10 +2,14 @@ import 'reflect-metadata';
 
 import { AppError } from '@shared/errors/AppError';
 
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+
 import { FakeCategoriesRepository } from '@modules/products/repositories/fakes/FakeCategoriesRepository';
 import { FakeProductsRepository } from '@modules/products/repositories/fakes/FakeProductsRepository';
 import { FakePromotionsRepository } from '@modules/products/repositories/fakes/FakePromotionsRepository';
 import { UpdateProductService } from '@modules/products/services/UpdateProductService';
+
+let fakeCacheProvider: FakeCacheProvider;
 
 let fakeCategoriesRepository: FakeCategoriesRepository;
 let fakeProductsRepository: FakeProductsRepository;
@@ -20,11 +24,13 @@ describe('UpdateProductService', () => {
       fakePromotionsRepository,
       fakeCategoriesRepository,
     );
+    fakeCacheProvider = new FakeCacheProvider();
 
     updateProductService = new UpdateProductService(
       fakeProductsRepository,
       fakeCategoriesRepository,
       fakePromotionsRepository,
+      fakeCacheProvider,
     );
   });
 

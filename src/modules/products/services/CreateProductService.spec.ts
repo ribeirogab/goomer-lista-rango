@@ -2,6 +2,8 @@ import 'reflect-metadata';
 
 import { AppError } from '@shared/errors/AppError';
 
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+
 import { FakeAddressesRepository } from '@modules/addresses/repositories/fakes/FakeAddressesRepository';
 import { FakeCategoriesRepository } from '@modules/products/repositories/fakes/FakeCategoriesRepository';
 import { FakeProductsRepository } from '@modules/products/repositories/fakes/FakeProductsRepository';
@@ -10,6 +12,8 @@ import { CreateProductService } from '@modules/products/services/CreateProductSe
 import { FakeRestaurantAddressesRepository } from '@modules/restaurants/repositories/fakes/FakeRestaurantAddressesRepository';
 import { FakeRestaurantsRepository } from '@modules/restaurants/repositories/fakes/FakeRestaurantsRepository';
 import { FakeWorkSchedulesRepository } from '@modules/restaurants/repositories/fakes/FakeWorkSchedulesRepository';
+
+let fakeCacheProvider: FakeCacheProvider;
 
 let fakeAddressesRepository: FakeAddressesRepository;
 let fakeCategoriesRepository: FakeCategoriesRepository;
@@ -42,12 +46,14 @@ describe('CreateProductService', () => {
       fakeWorkSchedulesRepository,
       fakeRestaurantAddressesRepository,
     );
+    fakeCacheProvider = new FakeCacheProvider();
 
     createProductService = new CreateProductService(
       fakeRestaurantsRepository,
       fakeProductsRepository,
       fakeCategoriesRepository,
       fakePromotionsRepository,
+      fakeCacheProvider,
     );
   });
 

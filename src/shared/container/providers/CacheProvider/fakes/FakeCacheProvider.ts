@@ -5,7 +5,7 @@ interface ICacheData {
   [key: string]: string;
 }
 
-export class FakeRedisProvider implements ICacheProvider {
+export class FakeCacheProvider implements ICacheProvider {
   private cache: ICacheData = {};
 
   public async save(key: string, value: unknown): Promise<void> {
@@ -28,7 +28,10 @@ export class FakeRedisProvider implements ICacheProvider {
     delete this.cache[key];
   }
 
-  public async invalidatePrefix(prefix: string): Promise<void> {
+  public async invalidatePrefix(
+    prefix: string,
+    _fullPattern?: string,
+  ): Promise<void> {
     const keys = Object.keys(this.cache).filter(key => key.startsWith(prefix));
 
     keys.forEach(key => {
