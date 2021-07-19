@@ -6,11 +6,13 @@ import '@shared/container';
 import { errors as celebrateErrors } from 'celebrate';
 import cors from 'cors';
 import express, { Request, Response, NextFunction } from 'express';
+import swaggerUi from 'swagger-ui-express';
 
 import { uploadConfig } from '@config/upload';
 
 import { AppError } from '@shared/errors/AppError';
 
+import swaggerFile from '../../../swagger.json';
 import { routes } from './routes';
 
 const app = express();
@@ -19,6 +21,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(routes);
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use('/files', express.static(uploadConfig.uploadsFolder));
 
 app.use(celebrateErrors());

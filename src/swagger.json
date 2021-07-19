@@ -1,0 +1,18 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Goomer Lista Rango",
+    "description": "RESTful API capable of managing the restaurants and products in your menu",
+    "version": "1.0.0",
+    "contact": {
+      "email":"ribeirogabx@gmail.com"
+    }
+  },
+  "schemes": ["https", "http"],
+  "definitions": {},
+  "components": {},
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
