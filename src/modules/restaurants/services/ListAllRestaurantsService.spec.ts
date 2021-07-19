@@ -50,4 +50,17 @@ describe('ListAllRestaurantsService', () => {
     expect(restaurants.length).toBe(1);
     expect(restaurants[0].name).toBe(restaurantName);
   });
+
+  it('should be able to list all restaurants (from cache)', async () => {
+    const restaurantName = 'Goomer Restaurant';
+
+    await fakeRestaurantsRepository.create({ name: restaurantName });
+
+    await listAllRestaurantsService.execute({});
+
+    const { restaurants } = await listAllRestaurantsService.execute({});
+
+    expect(restaurants.length).toBe(1);
+    expect(restaurants[0].name).toBe(restaurantName);
+  });
 });

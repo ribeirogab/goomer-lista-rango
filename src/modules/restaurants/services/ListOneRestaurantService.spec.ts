@@ -51,6 +51,23 @@ describe('ListOneRestaurantService', () => {
     expect(foundRestaurant.name).toBe(restaurant.name);
   });
 
+  it('should be able to list one restaurant by id (from cache)', async () => {
+    const restaurant = await fakeRestaurantsRepository.create({
+      name: 'Goomer Restaurant',
+    });
+
+    await listOneRestaurantService.execute({
+      restaurantId: restaurant.id,
+    });
+
+    const foundRestaurant = await listOneRestaurantService.execute({
+      restaurantId: restaurant.id,
+    });
+
+    expect(foundRestaurant.id).toBe(restaurant.id);
+    expect(foundRestaurant.name).toBe(restaurant.name);
+  });
+
   it("should not be able to list restaurant if it doesn't exist", async () => {
     await expect(
       listOneRestaurantService.execute({

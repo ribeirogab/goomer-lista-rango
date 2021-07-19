@@ -59,6 +59,37 @@ describe('ListOneProductService', () => {
     expect(product.price).toBe(18);
   });
 
+  it('should be able to list one product of restaurant by id (from cache)', async () => {
+    const restaurantId = 'any-id-for-test';
+
+    const restaurantProduct = await fakeProductsRepository.create({
+      restaurantId,
+      categoryId: 'any-id',
+      name: 'X-bacon',
+      price: 18,
+    });
+
+    await fakeProductsRepository.create({
+      restaurantId: 'other-any-id',
+      categoryId: 'any-id',
+      name: 'X-salada',
+      price: 15,
+    });
+
+    await listOneProductService.execute({
+      restaurantId,
+      productId: restaurantProduct.id,
+    });
+
+    const product = await listOneProductService.execute({
+      restaurantId,
+      productId: restaurantProduct.id,
+    });
+
+    expect(product.name).toBe('X-bacon');
+    expect(product.price).toBe(18);
+  });
+
   it("should not be able to list product if it doesn't exist", async () => {
     await expect(
       listOneProductService.execute({

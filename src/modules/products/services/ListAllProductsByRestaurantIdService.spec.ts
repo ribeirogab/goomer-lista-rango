@@ -63,4 +63,37 @@ describe('ListAllProductsByRestaurantIdService', () => {
     expect(products[1].name).toBe('Sorvete');
     expect(products[1].price).toBe(1.5);
   });
+
+  it('should be able to list all products of restaurant (from cache)', async () => {
+    const restaurantId = 'any-id-for-test';
+
+    await fakeProductsRepository.create({
+      restaurantId,
+      categoryId: 'any-id',
+      name: 'Milk Shake',
+      price: 6.99,
+    });
+
+    await fakeProductsRepository.create({
+      restaurantId,
+      categoryId: 'any-id',
+      name: 'Sorvete',
+      price: 1.5,
+    });
+
+    await listAllProductsByRestaurantIdService.execute({
+      restaurantId,
+    });
+
+    const { pageInfo, products } =
+      await listAllProductsByRestaurantIdService.execute({
+        restaurantId,
+      });
+
+    expect(pageInfo.total).toBe(2);
+    expect(products[0].name).toBe('Milk Shake');
+    expect(products[0].price).toBe(6.99);
+    expect(products[1].name).toBe('Sorvete');
+    expect(products[1].price).toBe(1.5);
+  });
 });
