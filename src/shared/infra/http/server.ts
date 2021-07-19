@@ -21,8 +21,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use(routes);
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use('/files', express.static(uploadConfig.uploadsFolder));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(celebrateErrors());
 app.use((error: Error, req: Request, res: Response, _: NextFunction) => {
