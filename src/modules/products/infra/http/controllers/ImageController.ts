@@ -1,16 +1,18 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import { UpdateProductImage } from '@modules/products/services/UpdateProductImage';
+import { UpdateProductImageService } from '@modules/products/services/UpdateProductImageService';
 
 export class ImageController {
   async update(req: Request, res: Response): Promise<Response> {
     const { restaurantId, productId } = req.params;
     const imageFilename = req.file?.filename;
 
-    const updateProductImage = container.resolve(UpdateProductImage);
+    const updateProductImageService = container.resolve(
+      UpdateProductImageService,
+    );
 
-    const updatedProduct = await updateProductImage.execute({
+    const updatedProduct = await updateProductImageService.execute({
       restaurantId,
       productId,
       imageFilename,
