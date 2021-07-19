@@ -5,7 +5,7 @@ services:
     image: redis:alpine
     container_name: goomerRedis_development
     ports:
-      - 6479:6379
+      - 6379:6379
 
   database:
     image: postgres
