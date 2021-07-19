@@ -1,5 +1,5 @@
 export interface ICreateKeyDTO {
   prefix: string;
-  params?: (string | undefined)[];
+  params?: (string | number | undefined)[];
   identifier?: string;
 }

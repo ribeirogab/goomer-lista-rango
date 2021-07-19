@@ -32,8 +32,11 @@ export class RedisProvider implements ICacheProvider {
     await this.client.del(key);
   }
 
-  public async invalidatePrefix(prefix: string): Promise<void> {
-    const keys = await this.client.keys(`${prefix}:*`);
+  public async invalidatePrefix(
+    prefix: string,
+    fullPattern?: string,
+  ): Promise<void> {
+    const keys = await this.client.keys(fullPattern || `${prefix}:*`);
 
     const pipeline = this.client.pipeline();
 

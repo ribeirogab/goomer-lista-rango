@@ -7,7 +7,7 @@ export interface ICacheProvider {
 
   invalidate(key: string): Promise<void>;
 
-  invalidatePrefix(prefix: string): Promise<void>;
+  invalidatePrefix(prefix: string, fullPattern?: string): Promise<void>;
 
   createKey({ prefix, params, identifier }: ICreateKeyDTO): string;
 }

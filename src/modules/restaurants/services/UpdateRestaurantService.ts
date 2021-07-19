@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import { AppError } from '@shared/errors/AppError';
 
 import { IAddressProvider } from '@shared/container/providers/AddressProvider/models/IAddressProvider';
+import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 import { IAddressesRepository } from '@modules/addresses/repositories/IAddressesRepository';
 
@@ -51,6 +52,9 @@ export class UpdateRestaurantService {
 
     @inject('AddressProvider')
     private AddressProvider: IAddressProvider,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -90,6 +94,9 @@ export class UpdateRestaurantService {
       restaurantId,
       { name },
     )) as IRestaurant;
+
+    await this.cacheProvider.invalidatePrefix('restaurant-list');
+    await this.cacheProvider.invalidate(`restaurant:${restaurantId}`);
 
     return updatedRestaurant;
   }
