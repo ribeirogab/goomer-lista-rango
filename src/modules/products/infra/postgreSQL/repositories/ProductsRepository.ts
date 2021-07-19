@@ -11,6 +11,19 @@ import { IProductsRepository } from '@modules/products/repositories/IProductsRep
 
 import { ProductEntity } from '../entities/ProductEntity';
 
+interface ISelectProductWithRelations
+  extends Omit<IProduct, 'imageUrl' | 'promotion'> {
+  promotion: {
+    id: string;
+    product_id: string;
+    description: string | null;
+    price: number;
+    start_datetime: Date;
+    finish_datetime: Date;
+    created_at: Date;
+  };
+}
+
 export class ProductsRepository implements IProductsRepository {
   private entity: typeof ProductEntity;
 
@@ -53,7 +66,7 @@ export class ProductsRepository implements IProductsRepository {
   }> {
     const { pool } = connection('ProductsRepository.findAll');
 
-    const { rows } = await pool.query<Omit<IProduct, 'imageUrl'>>(
+    const { rows } = await pool.query<ISelectProductWithRelations>(
       `SELECT
         p.id, p.name, p.price::float, p.image,
         (CASE WHEN
@@ -72,10 +85,12 @@ export class ProductsRepository implements IProductsRepository {
           ELSE
             jsonb_build_object(
               'id', pro.id,
+              'product_id', pro.product_id,
               'description', pro.description,
               'price', pro.price::float,
-              'startDatetime', pro.start_datetime,
-              'finishDatetime', pro.finish_datetime
+              'start_datetime', pro.start_datetime,
+              'finish_datetime', pro.finish_datetime,
+              'created_at', pro.created_at
             )
           END
         ) AS "promotion",
@@ -95,6 +110,9 @@ export class ProductsRepository implements IProductsRepository {
     const productsWithImageUrl: IProduct[] = rows.map(product => ({
       ...product,
       imageUrl: this.entity.setImageUrl(product.image),
+      promotion: product.promotion
+        ? this.entity.relations.promotions.formatPromotion(product.promotion)
+        : null,
     }));
 
     const { count } = (
@@ -120,7 +138,7 @@ export class ProductsRepository implements IProductsRepository {
   ): Promise<IProduct | null> {
     const pool = sharedPool ?? connection('ProductsRepository.findAll').pool;
 
-    const { rows } = await pool.query<Omit<IProduct, 'imageUrl'>>(
+    const { rows } = await pool.query<ISelectProductWithRelations>(
       `SELECT
         p.id, p.name, p.price::float, p.image,
         (CASE WHEN
@@ -139,10 +157,12 @@ export class ProductsRepository implements IProductsRepository {
           ELSE
             jsonb_build_object(
               'id', pro.id,
+              'product_id', pro.product_id,
               'description', pro.description,
               'price', pro.price::float,
-              'startDatetime', pro.start_datetime,
-              'finishDatetime', pro.finish_datetime
+              'start_datetime', pro.start_datetime,
+              'finish_datetime', pro.finish_datetime,
+              'created_at', pro.created_at
             )
           END
         ) AS "promotion",
@@ -166,6 +186,9 @@ export class ProductsRepository implements IProductsRepository {
     const product: IProduct = {
       ...rows[0],
       imageUrl: this.entity.setImageUrl(rows[0].image),
+      promotion: rows[0].promotion
+        ? this.entity.relations.promotions.formatPromotion(rows[0].promotion)
+        : null,
     };
 
     return product;

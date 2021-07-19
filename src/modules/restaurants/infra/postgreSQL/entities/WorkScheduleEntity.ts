@@ -29,6 +29,14 @@ export class WorkScheduleEntity {
   public created_at: Date;
   public updated_at: Date;
 
+  private static formatTime(time: string | null): string | null {
+    if (!time) {
+      return null;
+    }
+
+    return time.split(':').slice(0, -1).join(':');
+  }
+
   public static formatWorkSchedules(
     workSchedules: WorkScheduleEntity[],
   ): IWorkSchedule {
@@ -36,8 +44,8 @@ export class WorkScheduleEntity {
 
     workSchedules.forEach(workSchedule => {
       formattedWorkSchedules[workSchedule.week_day] = {
-        startHour: workSchedule.start_hour,
-        finishHour: workSchedule.finish_hour,
+        startHour: this.formatTime(workSchedule.start_hour),
+        finishHour: this.formatTime(workSchedule.finish_hour),
       };
     });
 

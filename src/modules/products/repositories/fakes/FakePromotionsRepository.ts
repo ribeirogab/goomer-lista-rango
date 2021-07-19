@@ -24,6 +24,30 @@ export class FakePromotionsRepository implements IPromotionsRepository {
     this.promotions = [];
   }
 
+  public formatDate(date: Date): {
+    year: number;
+    month: number;
+    day: number;
+    time: string;
+    datetime: Date;
+  } {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const time = `${date.getHours()}:${String(date.getMinutes()).padStart(
+      2,
+      '0',
+    )}`;
+
+    return {
+      year,
+      month,
+      day,
+      time,
+      datetime: date,
+    };
+  }
+
   public async create({
     productId,
     description,
@@ -48,8 +72,8 @@ export class FakePromotionsRepository implements IPromotionsRepository {
       id: promotion.id,
       description: promotion.description,
       price: promotion.price,
-      startDatetime: promotion.startDatetime,
-      finishDatetime: promotion.finishDatetime,
+      startsAt: this.formatDate(new Date(promotion.startDatetime)),
+      finishAt: this.formatDate(new Date(promotion.finishDatetime)),
     };
 
     return formattedPromotion;
@@ -82,6 +106,18 @@ export class FakePromotionsRepository implements IPromotionsRepository {
       promotion => promotion.productId === productId,
     );
 
-    return foundPromotion || null;
+    if (!foundPromotion) {
+      return null;
+    }
+
+    const formattedPromotion: IPromotion = {
+      id: foundPromotion.id,
+      description: foundPromotion.description,
+      price: foundPromotion.price,
+      startsAt: this.formatDate(new Date(foundPromotion.startDatetime)),
+      finishAt: this.formatDate(new Date(foundPromotion.finishDatetime)),
+    };
+
+    return formattedPromotion;
   }
 }

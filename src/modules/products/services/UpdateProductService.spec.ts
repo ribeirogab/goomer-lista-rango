@@ -138,10 +138,10 @@ describe('UpdateProductService', () => {
 
     expect(productUpdated.id).toBe(oldProduct.id);
     expect(productUpdated.promotion?.price).toBe(promotion.price);
-    expect(productUpdated.promotion?.startDatetime).toEqual(
+    expect(productUpdated.promotion?.startsAt.datetime).toEqual(
       promotion.startDatetime,
     );
-    expect(productUpdated.promotion?.finishDatetime).toEqual(
+    expect(productUpdated.promotion?.finishAt.datetime).toEqual(
       promotion.finishDatetime,
     );
   });
