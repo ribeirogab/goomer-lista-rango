@@ -36,7 +36,7 @@ export class ListOneRestaurantService {
     const restaurant = await this.restaurantsRepository.findById(restaurantId);
 
     if (!restaurant) {
-      throw new AppError('Restaurant not found.', 404, 'restaurant.notfound');
+      throw new AppError('Restaurant not found.', 404);
     }
 
     await this.cacheProvider.save(cacheKey, restaurant);
