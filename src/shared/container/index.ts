@@ -5,5 +5,6 @@ import '@modules/restaurants/providers';
 
 // global providers
 import './providers/AddressProvider';
+import './providers/CacheProvider';
 import './providers/PaginationProvider';
 import './providers/StorageProvider';

@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import { AppError } from '@shared/errors/AppError';
 
 import { FakeAddressProvider } from '@shared/container/providers/AddressProvider/fakes/FakeAddressProvider';
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 import { FakeAddressesRepository } from '@modules/addresses/repositories/fakes/FakeAddressesRepository';
 import { FakeRestaurantAddressesRepository } from '@modules/restaurants/repositories/fakes/FakeRestaurantAddressesRepository';
@@ -11,10 +12,13 @@ import { FakeWorkSchedulesRepository } from '@modules/restaurants/repositories/f
 import { UpdateRestaurantService } from '@modules/restaurants/services/UpdateRestaurantService';
 
 let fakeAddressProvider: FakeAddressProvider;
+let fakeCacheProvider: FakeCacheProvider;
+
 let fakeAddressesRepository: FakeAddressesRepository;
 let fakeRestaurantAddressesRepository: FakeRestaurantAddressesRepository;
 let fakeRestaurantsRepository: FakeRestaurantsRepository;
 let fakeWorkSchedulesRepository: FakeWorkSchedulesRepository;
+
 let updateRestaurantService: UpdateRestaurantService;
 
 describe('UpdateRestaurantService', () => {
@@ -29,6 +33,7 @@ describe('UpdateRestaurantService', () => {
       fakeRestaurantAddressesRepository,
     );
     fakeAddressProvider = new FakeAddressProvider();
+    fakeCacheProvider = new FakeCacheProvider();
 
     updateRestaurantService = new UpdateRestaurantService(
       fakeRestaurantsRepository,
@@ -36,6 +41,7 @@ describe('UpdateRestaurantService', () => {
       fakeRestaurantAddressesRepository,
       fakeWorkSchedulesRepository,
       fakeAddressProvider,
+      fakeCacheProvider,
     );
   });
 

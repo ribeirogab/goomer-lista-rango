@@ -1,16 +1,18 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import { UpdateRestaurantImage } from '@modules/restaurants/services/UpdateRestaurantImage';
+import { UpdateRestaurantImageService } from '@modules/restaurants/services/UpdateRestaurantImageService';
 
 export class ImageController {
   async update(req: Request, res: Response): Promise<Response> {
     const { restaurantId } = req.params;
     const imageFilename = req.file?.filename;
 
-    const updateRestaurantImage = container.resolve(UpdateRestaurantImage);
+    const updateRestaurantImageService = container.resolve(
+      UpdateRestaurantImageService,
+    );
 
-    const updatedRestaurant = await updateRestaurantImage.execute({
+    const updatedRestaurant = await updateRestaurantImageService.execute({
       restaurantId,
       imageFilename,
     });

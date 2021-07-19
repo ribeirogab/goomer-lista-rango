@@ -1,6 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
 import { IAddressProvider } from '@shared/container/providers/AddressProvider/models/IAddressProvider';
+import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 import { IAddressesRepository } from '@modules/addresses/repositories/IAddressesRepository';
 
@@ -44,6 +45,9 @@ export class CreateRestaurantService {
 
     @inject('AddressProvider')
     private AddressProvider: IAddressProvider,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -75,6 +79,8 @@ export class CreateRestaurantService {
       workSchedules: restaurantWorkSchedules,
       addresses: restaurantAddresses,
     };
+
+    await this.cacheProvider.invalidatePrefix('restaurant-list');
 
     return formattedRestaurant;
   }

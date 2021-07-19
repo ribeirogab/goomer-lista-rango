@@ -2,6 +2,8 @@ import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '@shared/errors/AppError';
 
+import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+
 import { IRestaurantsRepository } from '@modules/restaurants/repositories/IRestaurantsRepository';
 
 import { IProduct } from '../models/IProduct';
@@ -39,6 +41,9 @@ export class CreateProductService {
 
     @inject('PromotionsRepository')
     private promotionsRepository: IPromotionsRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -89,6 +94,8 @@ export class CreateProductService {
       category,
       promotion,
     };
+
+    await this.cacheProvider.invalidatePrefix('product-list');
 
     return formattedProduct;
   }

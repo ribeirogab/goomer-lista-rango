@@ -1,6 +1,12 @@
 version: '3.8'
 
 services:
+  redis:
+    image: redis:alpine
+    container_name: goomerRedis_development
+    ports:
+      - 6379:6379
+
   database:
     image: postgres
     container_name: goomerListaRangoDB_development

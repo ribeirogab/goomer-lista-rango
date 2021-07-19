@@ -2,10 +2,14 @@ import 'reflect-metadata';
 
 import { AppError } from '@shared/errors/AppError';
 
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+
 import { FakeCategoriesRepository } from '@modules/products/repositories/fakes/FakeCategoriesRepository';
 import { FakeProductsRepository } from '@modules/products/repositories/fakes/FakeProductsRepository';
 import { FakePromotionsRepository } from '@modules/products/repositories/fakes/FakePromotionsRepository';
 import { ListOneProductService } from '@modules/products/services/ListOneProductService';
+
+let fakeCacheProvider: FakeCacheProvider;
 
 let fakeCategoriesRepository: FakeCategoriesRepository;
 let fakeProductsRepository: FakeProductsRepository;
@@ -21,8 +25,12 @@ describe('ListOneProductService', () => {
       fakePromotionsRepository,
       fakeCategoriesRepository,
     );
+    fakeCacheProvider = new FakeCacheProvider();
 
-    listOneProductService = new ListOneProductService(fakeProductsRepository);
+    listOneProductService = new ListOneProductService(
+      fakeProductsRepository,
+      fakeCacheProvider,
+    );
   });
 
   it('should be able to list one product of restaurant by id', async () => {
@@ -40,6 +48,37 @@ describe('ListOneProductService', () => {
       categoryId: 'any-id',
       name: 'X-salada',
       price: 15,
+    });
+
+    const product = await listOneProductService.execute({
+      restaurantId,
+      productId: restaurantProduct.id,
+    });
+
+    expect(product.name).toBe('X-bacon');
+    expect(product.price).toBe(18);
+  });
+
+  it('should be able to list one product of restaurant by id (from cache)', async () => {
+    const restaurantId = 'any-id-for-test';
+
+    const restaurantProduct = await fakeProductsRepository.create({
+      restaurantId,
+      categoryId: 'any-id',
+      name: 'X-bacon',
+      price: 18,
+    });
+
+    await fakeProductsRepository.create({
+      restaurantId: 'other-any-id',
+      categoryId: 'any-id',
+      name: 'X-salada',
+      price: 15,
+    });
+
+    await listOneProductService.execute({
+      restaurantId,
+      productId: restaurantProduct.id,
     });
 
     const product = await listOneProductService.execute({

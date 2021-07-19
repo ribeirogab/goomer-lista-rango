@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '@shared/errors/AppError';
 
+import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { IStorageProvider } from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 
 import { IProduct } from '../models/IProduct';
@@ -14,10 +15,13 @@ interface IRequest {
 }
 
 @injectable()
-export class UpdateProductImage {
+export class UpdateProductImageService {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
 
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
@@ -52,6 +56,9 @@ export class UpdateProductImage {
       restaurantId,
       image: filename,
     })) as IProduct;
+
+    await this.cacheProvider.invalidatePrefix('product-list');
+    await this.cacheProvider.invalidatePrefix('', `product:*,${productId}`);
 
     return updatedProduct;
   }
