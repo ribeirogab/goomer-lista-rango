@@ -6,6 +6,13 @@ import { ProductsController } from '../controllers/ProductsController';
 const productsRouter = Router();
 const productsController = new ProductsController();
 
+const promotionValidation = Joi.object().keys({
+  description: Joi.string(),
+  price: Joi.number().required(),
+  startDatetime: Joi.date().required(),
+  finishDatetime: Joi.date().required(),
+});
+
 productsRouter.post(
   '/:restaurantId',
   celebrate({
@@ -16,12 +23,7 @@ productsRouter.post(
       name: Joi.string().required(),
       price: Joi.number().required(),
       category: Joi.string().required(),
-      promotion: Joi.object().keys({
-        description: Joi.string(),
-        price: Joi.number().required(),
-        startDatetime: Joi.date().required(),
-        finishDatetime: Joi.date().required(),
-      }),
+      promotion: promotionValidation,
     },
   }),
   productsController.create,
@@ -64,12 +66,7 @@ productsRouter.put(
         name: Joi.string(),
         price: Joi.number(),
         category: Joi.string(),
-        promotion: Joi.object().keys({
-          description: Joi.string(),
-          price: Joi.number().required(),
-          startDatetime: Joi.date().required(),
-          finishDatetime: Joi.date().required(),
-        }),
+        promotion: promotionValidation,
       })
       .min(1),
   }),

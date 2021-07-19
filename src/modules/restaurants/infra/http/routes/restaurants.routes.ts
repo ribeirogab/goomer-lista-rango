@@ -7,8 +7,12 @@ const restaurantsRouter = Router();
 const restaurantsController = new RestaurantsController();
 
 const weekDayScheduleValidation = Joi.object().keys({
-  startHour: Joi.string().required(),
-  finishHour: Joi.string().required(),
+  startHour: Joi.string()
+    .regex(/^([01]\d|2[0-3]):?([0-5]\d)$/)
+    .required(),
+  finishHour: Joi.string()
+    .regex(/^([01]\d|2[0-3]):?([0-5]\d)$/)
+    .required(),
 });
 
 const arrayUniqueAddressValidation = Joi.array()

@@ -28,18 +28,17 @@ export class PromotionsRepository implements IPromotionsRepository {
   ): Promise<IPromotion> {
     const pool = sharedPool ?? connection('PromotionsRepository.create').pool;
 
-    const { rows } = await pool.query<IPromotion>(
+    const { rows } = await pool.query<PromotionEntity>(
       `INSERT INTO ${this.entity.table}
       (id, product_id, description, price, start_datetime, finish_datetime)
       VALUES (DEFAULT, $1, $2, $3, $4, $5)
       RETURNING
         id, description, price::float,
-        start_datetime AS "startDatetime",
-        finish_datetime AS "finishDatetime"`,
+        start_datetime, finish_datetime`,
       [productId, description, price, startDatetime, finishDatetime],
     );
 
-    const promotion = rows[0];
+    const promotion = this.entity.formatPromotion(rows[0]);
 
     return promotion;
   }
@@ -76,16 +75,21 @@ export class PromotionsRepository implements IPromotionsRepository {
   public async findByProductId(productId: string): Promise<IPromotion | null> {
     const { pool } = connection('PromotionsRepository.findByProductId');
 
-    const { rows } = await pool.query<IPromotion>(
+    const { rows } = await pool.query<PromotionEntity>(
       `SELECT
         id, description, price::float,
-        start_datetime AS "startDatetime",
-        finish_datetime AS "finishDatetime"
+        start_datetime, finish_datetime
       FROM ${this.entity.table}
       WHERE product_id = $1`,
       [productId],
     );
 
-    return rows[0] || null;
+    if (!rows[0]) {
+      return null;
+    }
+
+    const promotion = this.entity.formatPromotion(rows[0]);
+
+    return promotion;
   }
 }
