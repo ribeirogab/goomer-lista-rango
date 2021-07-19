@@ -14,7 +14,7 @@ interface IRequest {
 }
 
 @injectable()
-export class UpdateRestaurantImage {
+export class UpdateRestaurantImageService {
   constructor(
     @inject('RestaurantsRepository')
     private restaurantsRepository: IRestaurantsRepository,
