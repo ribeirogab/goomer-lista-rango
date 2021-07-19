@@ -13,12 +13,14 @@ import { uploadConfig } from '@config/upload';
 import { AppError } from '@shared/errors/AppError';
 
 import swaggerFile from '../../../swagger.json';
+import { rateLimiter } from './middlewares/rateLimiter';
 import { routes } from './routes';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(rateLimiter);
 
 app.use(routes);
 app.use('/files', express.static(uploadConfig.uploadsFolder));
