@@ -14,7 +14,7 @@ export class ProductEntity {
     promotions: PromotionEntity,
     categories: CategoryEntity,
   };
-  public static baseImageUrl = 'http://localhost:3333/files';
+  public static baseImageUrl = process.env.STORAGE_BASE_URL || '';
 
   public id: string;
   public restaurant_id: string;
@@ -27,7 +27,7 @@ export class ProductEntity {
   public updated_at: Date;
 
   public static setImageUrl(image: string | null): string | null {
-    return image ? `${this.baseImageUrl}/${image}` : null;
+    return image ? `${this.baseImageUrl}${image}` : null;
   }
 
   public static formatProduct(

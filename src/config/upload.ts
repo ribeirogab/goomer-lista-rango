@@ -4,8 +4,10 @@ import path from 'path';
 
 const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
 
+type Driver = 'disk' | 's3';
+
 interface IUploadConfig {
-  driver: 'disk';
+  driver: Driver;
 
   tmpFolder: string;
   uploadsFolder: string;
@@ -35,8 +37,10 @@ const multerStorage = multer.diskStorage({
   },
 });
 
+const driver = process.env.STORAGE_DRIVER as Driver;
+
 const uploadConfig: IUploadConfig = {
-  driver: (process.env.STORAGE_DRIVER as 'disk') ?? 'disk',
+  driver,
   tmpFolder,
   uploadsFolder: path.resolve(tmpFolder, 'uploads'),
   multer: {
