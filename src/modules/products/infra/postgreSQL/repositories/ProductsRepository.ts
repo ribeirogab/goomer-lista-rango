@@ -136,6 +136,10 @@ export class ProductsRepository implements IProductsRepository {
     },
     sharedPool?: Pool,
   ): Promise<IProduct | null> {
+    if (!this.isValidId(restaurantId) || !this.isValidId(productId)) {
+      return null;
+    }
+
     const pool = sharedPool ?? connection('ProductsRepository.findAll').pool;
 
     const { rows } = await pool.query<ISelectProductWithRelations>(
@@ -202,6 +206,14 @@ export class ProductsRepository implements IProductsRepository {
     image,
     price,
   }: IUpdateProductDTO): Promise<IProduct | null> {
+    if (
+      !this.isValidId(restaurantId) ||
+      !this.isValidId(productId) ||
+      (categoryId && !this.isValidId(categoryId))
+    ) {
+      return null;
+    }
+
     const { pool } = connection('ProductsRepository.update');
 
     const possibleValuesToBeUpdated = [
