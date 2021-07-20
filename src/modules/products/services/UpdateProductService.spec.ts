@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import { AppError } from '@shared/errors/AppError';
 
 import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
 
 import { FakeCategoriesRepository } from '@modules/products/repositories/fakes/FakeCategoriesRepository';
 import { FakeProductsRepository } from '@modules/products/repositories/fakes/FakeProductsRepository';
@@ -10,6 +11,7 @@ import { FakePromotionsRepository } from '@modules/products/repositories/fakes/F
 import { UpdateProductService } from '@modules/products/services/UpdateProductService';
 
 let fakeCacheProvider: FakeCacheProvider;
+let fakeDateProvider: FakeDateProvider;
 
 let fakeCategoriesRepository: FakeCategoriesRepository;
 let fakeProductsRepository: FakeProductsRepository;
@@ -25,12 +27,14 @@ describe('UpdateProductService', () => {
       fakeCategoriesRepository,
     );
     fakeCacheProvider = new FakeCacheProvider();
+    fakeDateProvider = new FakeDateProvider();
 
     updateProductService = new UpdateProductService(
       fakeProductsRepository,
       fakeCategoriesRepository,
       fakePromotionsRepository,
       fakeCacheProvider,
+      fakeDateProvider,
     );
   });
 
@@ -143,6 +147,78 @@ describe('UpdateProductService', () => {
     );
     expect(productUpdated.promotion?.finishAt.datetime).toEqual(
       promotion.finishDatetime,
+    );
+  });
+
+  it('should not be able to create a new product with invalid promotion (end promotion time must be later than start promotion time)', async () => {
+    const restaurantId = 'any-id-for-test';
+
+    const category = await fakeCategoriesRepository.create({
+      restaurantId,
+      name: 'Salgados',
+    });
+
+    const product = await fakeProductsRepository.create({
+      restaurantId,
+      categoryId: category.id,
+      name: 'Pizza de Calabresa',
+      price: 39.9,
+    });
+
+    const promotion = {
+      price: 0.99,
+      description: 'Coxinha pela metade do preço!',
+      startDatetime: new Date(2021, 6, 23, 12, 30, 0), // start promotion time greater than finish promotion time
+      finishDatetime: new Date(2021, 6, 23, 12, 0, 0),
+    };
+
+    await expect(
+      updateProductService.execute({
+        restaurantId,
+        productId: product.id,
+        promotion,
+      }),
+    ).rejects.toEqual(
+      new AppError(
+        'End promotion time must be later than start promotion time',
+        400,
+      ),
+    );
+  });
+
+  it('should not be able to create a new product with invalid promotion (intervals between promotion times must be at least 15 minutes)', async () => {
+    const restaurantId = 'any-id-for-test';
+
+    const category = await fakeCategoriesRepository.create({
+      restaurantId,
+      name: 'Salgados',
+    });
+
+    const product = await fakeProductsRepository.create({
+      restaurantId,
+      categoryId: category.id,
+      name: 'Pizza de Calabresa',
+      price: 39.9,
+    });
+
+    const promotion = {
+      price: 0.99,
+      description: 'Coxinha pela metade do preço!',
+      startDatetime: new Date(2021, 6, 23, 12, 0, 0), // interval between startDatetime and finishDatetime less than 15 minutes
+      finishDatetime: new Date(2021, 6, 23, 12, 14, 0),
+    };
+
+    await expect(
+      updateProductService.execute({
+        restaurantId,
+        productId: product.id,
+        promotion,
+      }),
+    ).rejects.toEqual(
+      new AppError(
+        'Intervals between promotion times must be at least 15 minutes',
+        400,
+      ),
     );
   });
 
