@@ -42,6 +42,7 @@ export class UpdateProductImageService {
     });
 
     if (!product) {
+      await this.storageProvider.onErrorDeleteUploadedFile(imageFilename);
       throw new AppError('Product not found.', 404);
     }
 
