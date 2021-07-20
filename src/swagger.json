@@ -1,0 +1,873 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Goomer Lista Rango",
+    "description": "API RESTful capaz de gerenciar os restaurantes e os produtos do seu cardápio.",
+    "version": "1.0.0",
+    "contact": {
+      "email": "ribeirogabx@gmail.com"
+    }
+  },
+  "schemes": ["https", "http"],
+  "paths": {
+    "/restaurants": {
+      "post": {
+        "tags": [{ "name": "Restaurants" }],
+        "summary": "Criar um restaurante",
+        "description": "Rota utilizada para criação de um novo restaurante.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/RestaurantBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "restaurant": {
+                      "$ref": "#/definitions/Restaurant"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "get": {
+        "tags": [{ "name": "Restaurants" }],
+        "summary": "Listar todos os restaurantes",
+        "description": "Rota utilizada para listar todos os restaurantes cadastrados.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Página",
+            "default": 1,
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "description": "Itens por página",
+            "default": 10,
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pageInfo": {
+                      "$ref": "#/definitions/PageInfo"
+                    },
+                    "restaurants": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Restaurant"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/restaurants/{restaurantId}": {
+      "get": {
+        "tags": [{ "name": "Restaurants" }],
+        "summary": "Listar um restaurante",
+        "description": "Rota utilizada para listar um único restaurante.",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "description": "ID do restaurante",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "restaurant": {
+                      "$ref": "#/definitions/Restaurant"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Restaurant not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "put": {
+        "tags": [{ "name": "Restaurants" }],
+        "summary": "Atualizar um restaurante",
+        "description": "Rota utilizada para atualizar os dados de um restaurante.",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "description": "ID do restaurante",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/RestaurantBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "restaurant": {
+                      "$ref": "#/definitions/Restaurant"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Restaurant does not exist."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "delete": {
+        "tags": [{ "name": "Restaurants" }],
+        "summary": "Deletar um restaurante",
+        "description": "Rota utilizada para deletar um restaurante.\n\n**Observação**: Os produtos (e categorias) relacionados ao restaurante também serão removidos.",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "description": "ID do restaurante",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/restaurants/image/{restaurantId}": {
+      "patch": {
+        "tags": [{ "name": "Restaurants" }],
+        "summary": "Atualizar foto do restaurante",
+        "description": "Rota utilizada para atualizar a foto do restaurante.",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "description": "ID do restaurante",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "example": {
+                  "image": "goomer.png"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "restaurant": {
+                      "$ref": "#/definitions/RestaurantWithImage"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Restaurant not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+
+    "/products/{restaurantId}": {
+      "post": {
+        "tags": [{ "name": "Products" }],
+        "summary": "Criar um produto",
+        "description": "Rota utilizada para criação de um novo produto.",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "description": "ID do restaurante",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/ProductBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "product": {
+                      "$ref": "#/definitions/Product"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Restaurant does not exist."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "get": {
+        "tags": [{ "name": "Products" }],
+        "summary": "Listar todos os produtos de um restaurante",
+        "description": "Rota utilizada para listar todos os produtos de um restaurante.",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "description": "ID do restaurante",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pageInfo": {
+                      "$ref": "#/definitions/PageInfo"
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/products/{restaurantId}/{productId}": {
+      "get": {
+        "tags": [{ "name": "Products" }],
+        "summary": "Listar um produto",
+        "description": "Rota utilizada para listar um único produto.",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "description": "ID do restaurante",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID do produto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "product": {
+                      "$ref": "#/definitions/Product"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "put": {
+        "tags": [{ "name": "Products" }],
+        "summary": "Atualizar um produto",
+        "description": "Rota utilizada para atualizar os dados de um produto.",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "description": "ID do restaurante",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID do produto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/ProductBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "product": {
+                      "$ref": "#/definitions/Product"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Product does not exist."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "delete": {
+        "tags": [{ "name": "Products" }],
+        "summary": "Deletar um produto",
+        "description": "Rota utilizada para deletar um produto.\n\n**Observação**: As promoções relacionadas ao produto também serão excluídas.",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "description": "ID do restaurante",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID do produto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/products/image/{restaurantId}/{productId}": {
+      "patch": {
+        "tags": [{ "name": "Products" }],
+        "summary": "Atualizar foto do produto",
+        "description": "Rota utilizada para atualizar a foto do produto.",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "description": "ID do restaurante",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID do produto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "example": {
+                  "image": "product.png"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "product": {
+                      "$ref": "#/definitions/ProductWithImage"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file."
+          },
+          "404": {
+            "description": "Product not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Restaurant": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "6bcfe1b5-fd4d-4c92-b423-b96be9b66b28"
+        },
+        "name": {
+          "type": "string",
+          "example": "Goomer Restaurant 1"
+        },
+        "image": {
+          "type": "string",
+          "example": null
+        },
+        "imageUrl": {
+          "type": "string",
+          "example": null
+        },
+        "createdAt": {
+          "type": "date",
+          "example": "2021-07-19T02:55:08.573Z"
+        },
+        "updatedAt": {
+          "type": "date",
+          "example": "2021-07-19T02:55:08.573Z"
+        },
+        "addresses": {
+          "type": "array",
+          "example": [
+            {
+              "postalCode": "18046805",
+              "state": "SP",
+              "city": "Sorocaba",
+              "neighborhood": "Jardim América",
+              "number": 99,
+              "country": "Brasil",
+              "countryCode": "BR",
+              "createdAt": "2021-07-19T02:55:09.543Z",
+              "updatedAt": "2021-07-19T02:55:09.543Z"
+            }
+          ]
+        },
+        "workSchedules": {
+          "type": "object",
+          "example": {
+            "sunday": {
+              "startHour": null,
+              "finishHour": null
+            },
+            "monday": {
+              "startHour": "09:00",
+              "finishHour": "17:00"
+            },
+            "tuesday": {
+              "startHour": "09:00",
+              "finishHour": "17:00"
+            },
+            "wednesday": {
+              "startHour": "08:00",
+              "finishHour": "12:00"
+            },
+            "thursday": {
+              "startHour": "09:00",
+              "finishHour": "17:00"
+            },
+            "friday": {
+              "startHour": "09:00",
+              "finishHour": "17:00"
+            },
+            "saturday": {
+              "startHour": null,
+              "finishHour": null
+            }
+          }
+        }
+      }
+    },
+
+    "RestaurantWithImage": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "6bcfe1b5-fd4d-4c92-b423-b96be9b66b28"
+        },
+        "name": {
+          "type": "string",
+          "example": "Goomer Restaurant 1"
+        },
+        "image": {
+          "type": "string",
+          "example": "71f1b108636af992527f-goomer.png"
+        },
+        "imageUrl": {
+          "type": "string",
+          "example": "http://localhost:3333/files/71f1b108636af992527f-goomer.png"
+        },
+        "createdAt": {
+          "type": "date",
+          "example": "2021-07-19T02:55:08.573Z"
+        },
+        "updatedAt": {
+          "type": "date",
+          "example": "2021-07-19T02:55:08.573Z"
+        },
+        "addresses": {
+          "type": "array",
+          "example": [
+            {
+              "postalCode": "18046805",
+              "state": "SP",
+              "city": "Sorocaba",
+              "neighborhood": "Jardim América",
+              "number": 99,
+              "country": "Brasil",
+              "countryCode": "BR",
+              "createdAt": "2021-07-19T02:55:09.543Z",
+              "updatedAt": "2021-07-19T02:55:09.543Z"
+            }
+          ]
+        },
+        "workSchedules": {
+          "type": "object",
+          "example": {
+            "sunday": {
+              "startHour": null,
+              "finishHour": null
+            },
+            "monday": {
+              "startHour": "09:00",
+              "finishHour": "17:00"
+            },
+            "tuesday": {
+              "startHour": "09:00",
+              "finishHour": "17:00"
+            },
+            "wednesday": {
+              "startHour": "08:00",
+              "finishHour": "12:00"
+            },
+            "thursday": {
+              "startHour": "09:00",
+              "finishHour": "17:00"
+            },
+            "friday": {
+              "startHour": "09:00",
+              "finishHour": "17:00"
+            },
+            "saturday": {
+              "startHour": null,
+              "finishHour": null
+            }
+          }
+        }
+      }
+    },
+
+    "RestaurantBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Goomer Lista Rango"
+        },
+        "addresses": {
+          "type": "array",
+          "example": [
+            {
+              "postalCode": "18046805",
+              "number": 460
+            }
+          ]
+        },
+        "workSchedules": {
+          "type": "object",
+          "example": {
+            "monday": {
+              "startHour": "09:00",
+              "finishHour": "17:00"
+            },
+            "tuesday": {
+              "startHour": "09:00",
+              "finishHour": "17:00"
+            },
+            "wednesday": {
+              "startHour": "08:00",
+              "finishHour": "12:00"
+            },
+            "thursday": {
+              "startHour": "09:00",
+              "finishHour": "17:00"
+            },
+            "friday": {
+              "startHour": "09:00",
+              "finishHour": "17:00"
+            }
+          }
+        }
+      }
+    },
+
+    "Product": {
+      "type": "object",
+      "example": {
+        "id": "f3b6c3ef-3baf-481e-9814-f2cd29ea89c2",
+        "name": "Coxinha",
+        "price": 2,
+        "image": null,
+        "imageUrl": null,
+        "createdAt": "2021-07-19T03:37:40.845Z",
+        "updatedAt": "2021-07-19T03:37:40.845Z",
+        "category": {
+          "id": "813ed0f4-7690-4346-a658-5d04d99464fd",
+          "name": "Salgados"
+        },
+        "promotion": {
+          "id": "e97b2599-a8bc-4950-aed2-45f1a7c42ec3",
+          "description": "Coxinha pela METADE do dobro, APROVEITE!!!",
+          "price": 1.99,
+          "startDatetime": "2021-07-20T12:00:00.000Z",
+          "finishDatetime": "2021-07-23T20:00:00.000Z"
+        }
+      }
+    },
+
+    "ProductWithImage": {
+      "type": "object",
+      "example": {
+        "id": "f3b6c3ef-3baf-481e-9814-f2cd29ea89c2",
+        "name": "Coxinha",
+        "price": 2,
+        "image": "71f1b108636af992527f-coxinha.png",
+        "imageUrl": "http://localhost:3333/files/71f1b108636af992527f-coxinha.png",
+        "createdAt": "2021-07-19T03:37:40.845Z",
+        "updatedAt": "2021-07-19T03:37:40.845Z",
+        "category": {
+          "id": "813ed0f4-7690-4346-a658-5d04d99464fd",
+          "name": "Salgados"
+        },
+        "promotion": {
+          "id": "e97b2599-a8bc-4950-aed2-45f1a7c42ec3",
+          "description": "Coxinha pela METADE do dobro, APROVEITE!!!",
+          "price": 1.99,
+          "startDatetime": "2021-07-20T12:00:00.000Z",
+          "finishDatetime": "2021-07-23T20:00:00.000Z"
+        }
+      }
+    },
+
+    "ProductBody": {
+      "type": "object",
+      "example": {
+        "name": "Coxinha",
+        "price": 2,
+        "category": "Salgados",
+        "promotion": {
+          "description": "Coxinha pela METADE do dobro, APROVEITE!!!",
+          "price": 1.99,
+          "startDatetime": "2021-07-20T12:00:00Z",
+          "finishDatetime": "2021-07-23T20:00:00Z"
+        }
+      }
+    },
+
+    "PageInfo": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "number",
+          "example": 1
+        },
+        "perPage": {
+          "type": "number",
+          "example": 10
+        },
+        "currentPage": {
+          "type": "number",
+          "example": 1
+        },
+        "lastPage": {
+          "type": "number",
+          "example": 1
+        },
+        "hasNextPage": {
+          "type": "bool",
+          "example": false
+        }
+      }
+    }
+  },
+  "components": {},
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

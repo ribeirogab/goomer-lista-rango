@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: goomerRedis_development
+    ports:
+      - 6379:6379
+
+  database:
+    image: postgres
+    container_name: goomerListaRangoDB_development
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: goomer_lista_rango
+    volumes:
+      - ./src/shared/infra/databases/postgreSQL/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app:
+    image: node:alpine
+    container_name: goomerListaRangoAPI_development
+    working_dir: /app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development_environment
+    command: yarn dev
+    ports:
+      - 3333:3333
+    volumes:
+      - .:/app
+    depends_on:
+      - database
