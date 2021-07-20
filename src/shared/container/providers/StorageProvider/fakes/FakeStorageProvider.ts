@@ -15,4 +15,9 @@ export class FakeStorageProvider implements IStorageProvider {
 
     this.storage.splice(findIndex, 1);
   }
+
+  public async onErrorDeleteUploadedFile(_file: string): Promise<void> {
+    // eslint-disable-next-line no-console
+    console.log('Delete uploaded file');
+  }
 }
