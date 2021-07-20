@@ -22,10 +22,6 @@ jobs:
       - name: Install dependencies
         run: yarn
         
-      # Executar a build
-      - name: Run build
-        run: yarn build
-        
       # Copiar código para Digital Ocean
       - name: Copy dist to Digital Ocean
         uses: appleboy/scp-action@master    
