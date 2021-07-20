@@ -33,7 +33,7 @@ jobs:
           source: ".,!node_modules"
           target: "~/app/goomer-lista-rango"
           
-      # Executar "yarn" na Digital Ocean e restartar servidor Node.js
+      # Executar "yarn" e restartar containers do Docker na Digital Ocean
       - name: Install dependencies on Digital Ocean and restart Node.js server
         uses: appleboy/ssh-action@master    
         with:
@@ -44,5 +44,5 @@ jobs:
           script: |
             cd ~/app/goomer-lista-rango
             yarn
-            docker-compose -f docker-compose.yml up -d
+            docker-compose -f docker-compose.yml restart
             
