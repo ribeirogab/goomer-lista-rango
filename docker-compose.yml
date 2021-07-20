@@ -1,6 +1,14 @@
 version: '3.8'
 
 services:
+  redis:
+    image: bitnami/redis:latest
+    container_name: goomerRedis_production
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+
   database:
     image: bitnami/postgresql:latest
     container_name: goomerListaRangoDB_production
@@ -30,3 +38,4 @@ services:
       - .:/app
     depends_on:
       - database
+      - redis

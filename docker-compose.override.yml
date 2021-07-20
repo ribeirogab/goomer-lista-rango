@@ -35,3 +35,4 @@ services:
       - .:/app
     depends_on:
       - database
+      - redis
