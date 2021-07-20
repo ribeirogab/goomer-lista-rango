@@ -37,6 +37,7 @@ export class UpdateRestaurantImageService {
     const restaurant = await this.restaurantsRepository.findById(restaurantId);
 
     if (!restaurant) {
+      await this.storageProvider.onErrorDeleteUploadedFile(imageFilename);
       throw new AppError('Restaurant not found.', 404);
     }
 

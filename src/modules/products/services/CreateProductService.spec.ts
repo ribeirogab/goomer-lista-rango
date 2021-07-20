@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import { AppError } from '@shared/errors/AppError';
 
 import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
 
 import { FakeAddressesRepository } from '@modules/addresses/repositories/fakes/FakeAddressesRepository';
 import { FakeCategoriesRepository } from '@modules/products/repositories/fakes/FakeCategoriesRepository';
@@ -14,6 +15,7 @@ import { FakeRestaurantsRepository } from '@modules/restaurants/repositories/fak
 import { FakeWorkSchedulesRepository } from '@modules/restaurants/repositories/fakes/FakeWorkSchedulesRepository';
 
 let fakeCacheProvider: FakeCacheProvider;
+let fakeDateProvider: FakeDateProvider;
 
 let fakeAddressesRepository: FakeAddressesRepository;
 let fakeCategoriesRepository: FakeCategoriesRepository;
@@ -42,11 +44,9 @@ describe('CreateProductService', () => {
       fakeWorkSchedulesRepository,
       fakeRestaurantAddressesRepository,
     );
-    fakeRestaurantsRepository = new FakeRestaurantsRepository(
-      fakeWorkSchedulesRepository,
-      fakeRestaurantAddressesRepository,
-    );
+
     fakeCacheProvider = new FakeCacheProvider();
+    fakeDateProvider = new FakeDateProvider();
 
     createProductService = new CreateProductService(
       fakeRestaurantsRepository,
@@ -54,6 +54,7 @@ describe('CreateProductService', () => {
       fakeCategoriesRepository,
       fakePromotionsRepository,
       fakeCacheProvider,
+      fakeDateProvider,
     );
   });
 
@@ -99,6 +100,62 @@ describe('CreateProductService', () => {
     expect(product.price).toBe(2.0);
     expect(product.promotion?.price).toBe(promotion.price);
     expect(product.promotion?.description).toBe(promotion.description);
+  });
+
+  it('should not be able to create a new product with invalid promotion (end promotion time must be later than start promotion time)', async () => {
+    const restaurant = await fakeRestaurantsRepository.create({
+      name: 'Goomer Lista Rango',
+    });
+
+    const promotion = {
+      price: 0.99,
+      description: 'Coxinha pela metade do preço!',
+      startDatetime: new Date(2021, 6, 23, 12, 30, 0), // start promotion time greater than finish promotion time
+      finishDatetime: new Date(2021, 6, 23, 12, 0, 0),
+    };
+
+    await expect(
+      createProductService.execute({
+        restaurantId: restaurant.id,
+        category: 'Salgados',
+        name: 'Coxinha de Frango',
+        price: 2.0,
+        promotion,
+      }),
+    ).rejects.toEqual(
+      new AppError(
+        'End promotion time must be later than start promotion time',
+        400,
+      ),
+    );
+  });
+
+  it('should not be able to create a new product with invalid promotion (intervals between promotion times must be at least 15 minutes)', async () => {
+    const restaurant = await fakeRestaurantsRepository.create({
+      name: 'Goomer Lista Rango',
+    });
+
+    const promotion = {
+      price: 0.99,
+      description: 'Coxinha pela metade do preço!',
+      startDatetime: new Date(2021, 6, 23, 12, 0, 0), // interval between startDatetime and finishDatetime less than 15 minutes
+      finishDatetime: new Date(2021, 6, 23, 12, 14, 0),
+    };
+
+    await expect(
+      createProductService.execute({
+        restaurantId: restaurant.id,
+        category: 'Salgados',
+        name: 'Coxinha de Frango',
+        price: 2.0,
+        promotion,
+      }),
+    ).rejects.toEqual(
+      new AppError(
+        'Intervals between promotion times must be at least 15 minutes',
+        400,
+      ),
+    );
   });
 
   it('should not be able to create a new product if restaurant does not exists', async () => {

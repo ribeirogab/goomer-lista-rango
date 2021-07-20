@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import { AppError } from '@shared/errors/AppError';
 
 import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { IDateProvider } from '@shared/container/providers/DateProvider/models/IDateProvider';
 
 import { IRestaurantsRepository } from '@modules/restaurants/repositories/IRestaurantsRepository';
 
@@ -11,6 +12,7 @@ import { IPromotion } from '../models/IPromotion';
 import { ICategoriesRepository } from '../repositories/ICategoriesRepository';
 import { IProductsRepository } from '../repositories/IProductsRepository';
 import { IPromotionsRepository } from '../repositories/IPromotionsRepository';
+import { checkIfThePromotionIsValid } from '../utils/checkIfThePromotionIsValid';
 
 type Promotion = {
   description?: string;
@@ -44,6 +46,9 @@ export class CreateProductService {
 
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
+
+    @inject('DateProvider')
+    private dateProvider: IDateProvider,
   ) {}
 
   public async execute({
@@ -53,6 +58,17 @@ export class CreateProductService {
     price,
     promotion: inputPromotion,
   }: IRequest): Promise<IProduct> {
+    if (inputPromotion) {
+      const { status, message } = checkIfThePromotionIsValid(
+        inputPromotion,
+        this.dateProvider,
+      );
+
+      if (status === 'invalid') {
+        throw new AppError(message, 400);
+      }
+    }
+
     const restaurantExists = await this.restaurantsRepository.findById(
       restaurantId,
     );

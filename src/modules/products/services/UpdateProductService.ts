@@ -3,12 +3,14 @@ import { inject, injectable } from 'tsyringe';
 import { AppError } from '@shared/errors/AppError';
 
 import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { IDateProvider } from '@shared/container/providers/DateProvider/models/IDateProvider';
 
 import { IProduct } from '@modules/products/models/IProduct';
 
 import { ICategoriesRepository } from '../repositories/ICategoriesRepository';
 import { IProductsRepository } from '../repositories/IProductsRepository';
 import { IPromotionsRepository } from '../repositories/IPromotionsRepository';
+import { checkIfThePromotionIsValid } from '../utils/checkIfThePromotionIsValid';
 
 type Promotion = {
   description?: string;
@@ -40,6 +42,9 @@ export class UpdateProductService {
 
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
+
+    @inject('DateProvider')
+    private dateProvider: IDateProvider,
   ) {}
 
   public async execute({
@@ -50,6 +55,17 @@ export class UpdateProductService {
     price,
     promotion,
   }: IRequest): Promise<IProduct> {
+    if (promotion) {
+      const { status, message } = checkIfThePromotionIsValid(
+        promotion,
+        this.dateProvider,
+      );
+
+      if (status === 'invalid') {
+        throw new AppError(message, 400);
+      }
+    }
+
     const productExists = await this.productsRepository.findOne({
       restaurantId,
       productId,

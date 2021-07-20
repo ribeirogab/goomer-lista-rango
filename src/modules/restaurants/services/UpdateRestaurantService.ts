@@ -4,6 +4,7 @@ import { AppError } from '@shared/errors/AppError';
 
 import { IAddressProvider } from '@shared/container/providers/AddressProvider/models/IAddressProvider';
 import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { IDateProvider } from '@shared/container/providers/DateProvider/models/IDateProvider';
 
 import { IAddressesRepository } from '@modules/addresses/repositories/IAddressesRepository';
 
@@ -12,6 +13,7 @@ import { IWeekDayHours } from '../models/IWorkSchedule';
 import { IRestaurantAddressesRepository } from '../repositories/IRestaurantAddressesRepository';
 import { IRestaurantsRepository } from '../repositories/IRestaurantsRepository';
 import { IWorkSchedulesRepository } from '../repositories/IWorkSchedulesRepository';
+import { checkIfTheWorkingSchedulesAreValid } from '../utils/checkIfTheWorkingSchedulesAreValid';
 
 type WorkSchedules = {
   sunday?: IWeekDayHours;
@@ -55,6 +57,9 @@ export class UpdateRestaurantService {
 
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
+
+    @inject('DateProvider')
+    private dateProvider: IDateProvider,
   ) {}
 
   public async execute({
@@ -63,6 +68,17 @@ export class UpdateRestaurantService {
     addresses: inputAddresses,
     workSchedules,
   }: IRequest): Promise<IRestaurant> {
+    if (workSchedules) {
+      const { status, message } = checkIfTheWorkingSchedulesAreValid(
+        workSchedules,
+        this.dateProvider,
+      );
+
+      if (status === 'invalid') {
+        throw new AppError(message, 400);
+      }
+    }
+
     const restaurantExists = await this.restaurantsRepository.findById(
       restaurantId,
     );

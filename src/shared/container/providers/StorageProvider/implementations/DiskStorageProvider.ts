@@ -26,4 +26,8 @@ export class DiskStorageProvider implements IStorageProvider {
 
     await fs.promises.unlink(filePath);
   }
+
+  public async onErrorDeleteUploadedFile(file: string): Promise<void> {
+    await fs.promises.unlink(path.resolve(uploadConfig.tmpFolder, file));
+  }
 }

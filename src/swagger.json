@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Goomer Lista Rango",
-    "description": "API RESTful capaz de gerenciar os restaurantes e os produtos do seu cardápio.",
+    "description": "API RESTful capaz de gerenciar os restaurantes e os produtos do seu cardápio.\n\n**Arquivos para download:**\n- [**Insomnia Request Collection**](https://drive.google.com/file/d/10A23rAAa1VWtDu7Tqm9lI9MlPqVCNbpX/view?usp=sharing)\n- [**Postman Request Collection**](https://drive.google.com/file/d/1JcjkTyhFi9Ui0U_q92MlhqMViB0f0Zuh/view?usp=sharing)\n---",
     "version": "1.0.0",
     "contact": {
       "email": "ribeirogabx@gmail.com"

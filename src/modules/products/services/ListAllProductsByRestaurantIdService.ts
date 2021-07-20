@@ -1,10 +1,14 @@
 import { inject, injectable } from 'tsyringe';
 
+import { AppError } from '@shared/errors/AppError';
+
 import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import {
   IPaginationProvider,
   PageInfo,
 } from '@shared/container/providers/PaginationProvider/models/IPaginationProvider';
+
+import { IRestaurantsRepository } from '@modules/restaurants/repositories/IRestaurantsRepository';
 
 import { IProduct } from '../models/IProduct';
 import { IProductsRepository } from '../repositories/IProductsRepository';
@@ -23,6 +27,9 @@ interface IResponse {
 @injectable()
 export class ListAllProductsByRestaurantIdService {
   constructor(
+    @inject('RestaurantsRepository')
+    private restaurantsRepository: IRestaurantsRepository,
+
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
 
@@ -47,6 +54,14 @@ export class ListAllProductsByRestaurantIdService {
 
     if (cacheData) {
       return cacheData;
+    }
+
+    const restaurantExists = await this.restaurantsRepository.findById(
+      restaurantId,
+    );
+
+    if (!restaurantExists) {
+      throw new AppError('Restaurant does not exist.', 400);
     }
 
     const { count, products } = await this.productsRepository.findAll({

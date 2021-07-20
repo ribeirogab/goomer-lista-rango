@@ -19,6 +19,10 @@ export class RestaurantsRepository implements IRestaurantsRepository {
     this.entity = RestaurantEntity;
   }
 
+  private isValidId(id: string) {
+    return uuidValidate(id) && uuidVersion(id) === 4;
+  }
+
   public async create({
     name,
   }: {
@@ -35,10 +39,6 @@ export class RestaurantsRepository implements IRestaurantsRepository {
     const restaurant = this.entity.formatRestaurant(rows[0]);
 
     return restaurant;
-  }
-
-  private isValidId(id: string) {
-    return uuidValidate(id) && uuidVersion(id) === 4;
   }
 
   public async findAll({ page, perPage }: IFindAllRestaurantsDTO): Promise<{

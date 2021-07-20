@@ -50,4 +50,8 @@ export class AmazonS3Provider implements IStorageProvider {
       })
       .promise();
   }
+
+  public async onErrorDeleteUploadedFile(file: string): Promise<void> {
+    await fs.promises.unlink(path.resolve(uploadConfig.tmpFolder, file));
+  }
 }
