@@ -19,7 +19,7 @@ export class RestaurantEntity {
     restaurantAddresses: RestaurantAddressEntity,
     workSchedules: WorkScheduleEntity,
   };
-  public static baseImageUrl = 'http://localhost:3333/files';
+  public static baseImageUrl = process.env.STORAGE_BASE_URL || '';
 
   public id: string;
   public name: string;
@@ -29,7 +29,7 @@ export class RestaurantEntity {
   public updated_at: Date;
 
   private static setImageUrl(image: string | null): string | null {
-    return image ? `${this.baseImageUrl}/${image}` : null;
+    return image ? `${this.baseImageUrl}${image}` : null;
   }
 
   public static formatRestaurant(
