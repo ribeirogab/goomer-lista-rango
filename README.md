@@ -53,11 +53,11 @@ Outro desafio foi escrever primeiramente todos os testes unitários da aplicaç�
 
 # Melhorias
 
-**Testes de integração:**
+<!-- **Testes de integração:**
 
 Os testes de integração são mais que necessários nesta e em qualquer aplicação que visa escalabilidade e confiabilidade.
 
----
+--- -->
 
 **Tabela de indisponibilidade:**
 
@@ -69,7 +69,7 @@ Um restaurante trabalha das 11:00 às 17:00 de segunda à sexta, porém, em uma 
 
 **Implementar um ORM:**
 
-Apesar da aplicação estar relativamente organizada, um ``ORM`` seria de grande ajuda principalmente para deixar o código mais legível e manutenível, retirando toda a complexidade do SQL do repositório.
+Apesar da aplicação estar relativamente organizada, um ``ORM`` seria de grande ajuda principalmente para deixar o código mais legível e manutenível, retirando toda a complexidade do SQL dos repositórios.
 
 Opções de ORM:
 
@@ -80,7 +80,7 @@ Opções de ORM:
 
 **API de códigos postais:**
 
-Atualmente a API possui um ``provider`` de código postais com duas implementações:
+Atualmente a API possui um ``provider`` de códigos postais com duas implementações:
 
 - Brasil API;
 - Postmon.
@@ -89,34 +89,43 @@ Porém essas APIs fornecem apenas códigos postais (CEP) do Brasil, sendo assim,
 
 Possíveis soluções:
 
-- Habilitar todos os campos de endereço diretamente na rota;
-- Utilizar uma API de códigos postais global.
+- Criar uma implementação do [zipcodebase](https://zipcodebase.com/):
+
+  O Zipcodebase é uma API de códigos postais **globais**, porém disponibiliza apenas 5000 requisições mensais, dependendo do tamanho da aplicação pode ser viável. (os planos pagos são bem caros $$$)
 
 ---
 
 **API KEY:**
 
-Como a API não tem nenhuma forma de autenticação e todas as rotas são públicas, uma boa solução seria criar uma API KEY para cada client que utilizasse-a.
+Como a API não tem nenhuma forma de autenticação e todas as rotas são públicas isso a torna muito insegura e vulnerável.
+
+Um exemplo de vulnerabilidade são as rotas de envio de imagem em ambiente de produção, atualmente a aplicação está utilizando o Amazon S3 para armazenar as imagens, sendo assim, qualquer pessoa que tiver acesso a essas rotas conseguem enviar imagens o Bucket do projeto no S3, ou seja, **MUITO GRAVE**.
+
+No momento a autenticação via ``API KEY`` não foi implementada para facilitar os testes, mas após o término do processo essas chaves de autenticação serão configuradas para aumentar a segurança da API e evitar dores de cabeça.
+
+Em ambiente de desenvolvimento a aplicação está utilizando o ``DiskProvider`` que salva as imagens diretamente no disco sendo assim, não é um problema.
 
 ---
 
 **Excluir promoção quando acabar:**
 
-Quando um produto é colocado em promoção temos a data/hora de início e término, sendo assim, após o fim da promoção o registro poderia ser excluído do banco de dados e o campo de promoção na listagem de produtos ser setado como ``null``.
+Quando um produto é colocado em promoção temos a data/hora de início e término, ao fim da promoção o registro continua vigente no banco de dados e na listagem de produto(s).
+
+Uma possível melhoria que evitaria informações desnecessárias no banco seria: após o fim da promoção deletar o registro do banco de dados e "setar" o campo ``promotion`` dos produtos (nas listagens) como ``null``.
 
 ---
 
 # Arquitetura
 
-O projeto foi construído em cima da arquitetura Domain-Driven Design ou Projeto Orientado a Domínio (famoso DDD) que é um padrão de modelagem orientado a objetos (módulos).
+O projeto foi construído em cima da arquitetura Domain-Driven Design ou Projeto Orientado a Domínio (famoso DDD) que é um padrão de modelagem orientado a objetos (ou módulos).
 
 ## Arquitetura global
 
 ```shell
 src/
-|-- config/ # Contém os arquivos de configuração, exemplo: dotenv, cache e upload.
-|-- modules/ # Contém os módulos (ou objetos) da aplicação.
-|-- shared/ # Arquivos compartilhados (globais), exemplo: server, errors e container de injeção de dependência.
+|-- config/ # Contém os arquivos de configuração, exemplo: dotenv, cache e upload
+|-- modules/ # Contém os módulos (ou objetos) da aplicação
+|-- shared/ # Arquivos compartilhados (globais), exemplo: server, errors e container de injeção de dependência
 |-- swagger.json # Apenas a documentação
 ```
 
@@ -129,7 +138,14 @@ src/
 |-- providers/ # Arquivos dos repositórios e providers do módulo para serem "injetados" no container de injeção de dependência
 |-- repositories/ # Modelo de dados, DTOs e fakes dos repositórios do módulo
 |-- services/ # Serviços ou regra de negócio da aplicação
+|-- utils/ # Arquivo com funções/lógicas que são utilizadas em dois ou mais services
 ```
+
+## Fluxo de requisição
+
+De forma abstrata, a aplicação possuí o seguinte fluxo de requisição:
+
+<img src="https://i.ibb.co/yQwBJRk/Fluxo-de-requisi-o-2x-1.png" alt="Fluxo de requisição" width="800"/>
 
 # Banco de dados
 
@@ -139,7 +155,7 @@ O banco de dados utilizado no projeto foi o PostgreSQL, mais por questão de fam
 
 <img src="https://i.ibb.co/4mFyy6f/Goomer-Lista-Rango-2x-8.png" alt="DER" width="800"/>
 
-- [SQL de criação do banco](https://github.com/ribeirogab/goomer-lista-rango/blob/main/src/shared/infra/databases/postgreSQL/init.sql)
+> [SQL de criação do banco](https://github.com/ribeirogab/goomer-lista-rango/blob/main/src/shared/infra/databases/postgreSQL/init.sql)
 
 # Instalação
 
@@ -204,11 +220,15 @@ docker-compose -f docker-compose.yml up
 - [Node.js](https://nodejs.org/) versão 14.17.2 ou superior.
 - [Yarn](https://yarnpkg.com/) versão 1.22.10 ou superior.
 
+...
+
 ## Docker run
 
 **Requisitos:**
 
 - [Docker](https://docs.docker.com/engine/install/) versão 20.10.2 ou superior;
+
+...
 
 # Testes
 
@@ -222,8 +242,8 @@ yarn test
 
 **Cobertura:**
 
-<img src="https://i.ibb.co/Mpn9mVj/Screenshot-20210719-153306.png" alt="Cobertura dos testes" width="480"/>
+<img src="https://i.ibb.co/LJMfJtW/Screenshot-20210720-181328.png" alt="Cobertura dos testes" width="480"/>
 
 Para visualizar a cobertura dos testes de uma maneira mais intuítiva, acesse o diretório ``goomer-lista-rango/coverage/lcov-report``.
 
-Esta pasta possuí um arquivo ``ìndex.html``, que ao ser aberto exibirá a cobertura de todos os testes.
+Esta pasta possuí um arquivo ``ìndex.html``, que ao ser aberto exibirá a cobertura de todos os testes em uma página web.
