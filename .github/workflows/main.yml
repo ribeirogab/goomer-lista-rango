@@ -23,7 +23,7 @@ jobs:
         run: yarn
         
       # Copiar código para Digital Ocean
-      - name: Copy dist to Digital Ocean
+      - name: Copy repo to Digital Ocean
         uses: appleboy/scp-action@master    
         with:
           host: ${{ secrets.SSH_HOST }}
