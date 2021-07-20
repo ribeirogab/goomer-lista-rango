@@ -107,7 +107,7 @@ Em ambiente de desenvolvimento a aplicação está utilizando o ``DiskProvider``
 
 ---
 
-**Excluir promoção quando acabar:**
+**Excluir promoções automaticamente:**
 
 Quando um produto é colocado em promoção temos a data/hora de início e término, ao fim da promoção o registro continua vigente no banco de dados e na listagem de produto(s).
 
@@ -178,19 +178,19 @@ Para rodar essa aplicação localmente você pode seguir uma das três opções 
 Opções:
 
 - [Docker Compose](#docker-compose-recomendada); (Recomendada)
-- Manualmente;
-- Docker run.
+- [Manualmente](#manualmente);
+- [Docker run](#docker-run).
 
-## Docker Compose (Recomendada)
+## **Docker Compose (Recomendada)**
 
-**Requisitos:**
+### **Requisitos**
 
 - [Docker](https://docs.docker.com/engine/install/) versão 20.10.2 ou superior;
 - [Docker Compose](https://docs.docker.com/compose/install/) versão 1.29.2 ou superior.
 
 ---
 
-**Desenvolvimento:**
+### **Desenvolvimento**
 
 Após clonar o projeto e instalar as dependências, execute o seguinte comando para rodar a aplicação:
 
@@ -202,9 +202,9 @@ docker-compose up
 
 ---
 
-**Production ready:**
+### **Produção**
 
-Para executar o projeto em produção, será necessário criar um arquivo ``.env`` na raiz do projeto e preenche-lo, caso seja apenas um teste, basta copiar os valores de ``.env.dev``.
+Para executar o projeto em produção, será necessário criar um arquivo ``.env`` na raiz do projeto e preenche-lo, caso seja apenas um teste, basta copiar os valores de ``.env.example``.
 
 Com o ``.env`` criado e preenchido, rode o seguinte comando:
 
@@ -212,23 +212,19 @@ Com o ``.env`` criado e preenchido, rode o seguinte comando:
 docker-compose -f docker-compose.yml up
 ```
 
+---
+
 ## Manualmente
 
-**Requisitos:**
+Para ver as instruções de como rodar o projeto manualmente clique [aqui](./docs/RUN.md#manualmente).
 
-- [Docker](https://docs.docker.com/engine/install/) versão 20.10.2 ou superior;
-- [Node.js](https://nodejs.org/) versão 14.17.2 ou superior.
-- [Yarn](https://yarnpkg.com/) versão 1.22.10 ou superior.
-
-...
+---
 
 ## Docker run
 
-**Requisitos:**
+Para ver as instruções de como rodar o projeto utilizando ``docker run`` [aqui](./docs/RUN.md#docker-run).
 
-- [Docker](https://docs.docker.com/engine/install/) versão 20.10.2 ou superior;
-
-...
+ ---
 
 # Testes
 
