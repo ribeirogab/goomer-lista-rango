@@ -42,10 +42,7 @@ describe('CreateProductService', () => {
       fakeWorkSchedulesRepository,
       fakeRestaurantAddressesRepository,
     );
-    fakeRestaurantsRepository = new FakeRestaurantsRepository(
-      fakeWorkSchedulesRepository,
-      fakeRestaurantAddressesRepository,
-    );
+
     fakeCacheProvider = new FakeCacheProvider();
 
     createProductService = new CreateProductService(
