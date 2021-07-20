@@ -794,8 +794,20 @@
           "id": "e97b2599-a8bc-4950-aed2-45f1a7c42ec3",
           "description": "Coxinha pela METADE do dobro, APROVEITE!!!",
           "price": 1.99,
-          "startDatetime": "2021-07-20T12:00:00.000Z",
-          "finishDatetime": "2021-07-23T20:00:00.000Z"
+          "startsAt": {
+            "year": 2021,
+            "month": 7,
+            "day": 20,
+            "time": "12:00",
+            "datetime": "2021-07-20T12:00:00.000Z"
+          },
+          "finishAt": {
+            "year": 2021,
+            "month": 7,
+            "day": 23,
+            "time": "20:00",
+            "datetime": "2021-07-23T20:00:00.000Z"
+          }
         }
       }
     },
@@ -818,8 +830,20 @@
           "id": "e97b2599-a8bc-4950-aed2-45f1a7c42ec3",
           "description": "Coxinha pela METADE do dobro, APROVEITE!!!",
           "price": 1.99,
-          "startDatetime": "2021-07-20T12:00:00.000Z",
-          "finishDatetime": "2021-07-23T20:00:00.000Z"
+          "startsAt": {
+            "year": 2021,
+            "month": 7,
+            "day": 20,
+            "time": "12:00",
+            "datetime": "2021-07-20T12:00:00.000Z"
+          },
+          "finishAt": {
+            "year": 2021,
+            "month": 7,
+            "day": 23,
+            "time": "20:00",
+            "datetime": "2021-07-23T20:00:00.000Z"
+          }
         }
       }
     },
