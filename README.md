@@ -127,6 +127,8 @@ src/
 |-- swagger.json # Apenas a documentação
 ```
 
+<br>
+
 **📁 Arquitetura dos módulos:**
 
 ```shell
@@ -139,11 +141,16 @@ src/
 |-- utils/ # Arquivo com funções/lógicas que são utilizadas em dois ou mais services
 ```
 
+<br>
+
 **↔️ Fluxo de requisição:**
 
 De forma abstrata, a aplicação possuí o seguinte fluxo de requisição:
 
 <img src="https://i.ibb.co/yQwBJRk/Fluxo-de-requisi-o-2x-1.png" alt="Fluxo de requisição" width="800"/>
+
+<br>
+<br>
 
 # Banco de dados
 
