@@ -13,7 +13,7 @@
 - [Instalação](#Instalação)
 - [Testes](#Testes)
 
-**Demo:** https://goomer-lista-rango.ribeirogab.me
+**Demo:** [https://goomer-lista-rango.ribeirogab.me](https://goomer-lista-rango.ribeirogab.me)
 
 # Tecnologias
 
@@ -24,7 +24,7 @@ Linguagens e ferramentas:
 
 Banco de Dados:
 
-- [PostgreSQL](https://www.postgresql.org/);
+- [PostgreSQL](https://www.postgresql.org/).
 
 Testes unitários:
 
@@ -53,11 +53,7 @@ Outro desafio foi escrever primeiramente todos os testes unitários da aplicaç�
 
 # Melhorias
 
-<!-- **Testes de integração:**
-
-Os testes de integração são mais que necessários nesta e em qualquer aplicação que visa escalabilidade e confiabilidade.
-
---- -->
+<!-- **Testes de integração:** -->
 
 **Tabela de indisponibilidade:**
 
@@ -80,7 +76,7 @@ Opções de ORM:
 
 **API de códigos postais:**
 
-Atualmente a API possui um ``provider`` de códigos postais com duas implementações:
+Atualmente a API possui um ``provider`` códigos postais com duas implementações:
 
 - Brasil API;
 - Postmon.
@@ -89,7 +85,7 @@ Porém essas APIs fornecem apenas códigos postais (CEP) do Brasil, sendo assim,
 
 Possíveis soluções:
 
-- Criar uma implementação do [zipcodebase](https://zipcodebase.com/):
+- Criar uma implementação do [Zipcodebase](https://zipcodebase.com/):
 
   O Zipcodebase é uma API de códigos postais **globais**, porém disponibiliza apenas 5000 requisições mensais, dependendo do tamanho da aplicação pode ser viável. (os planos pagos são bem caros $$$)
 
@@ -99,7 +95,7 @@ Possíveis soluções:
 
 Como a API não tem nenhuma forma de autenticação e todas as rotas são públicas isso a torna muito insegura e vulnerável.
 
-Um exemplo de vulnerabilidade são as rotas de envio de imagem em ambiente de produção, atualmente a aplicação está utilizando o Amazon S3 para armazenar as imagens, sendo assim, qualquer pessoa que tiver acesso a essas rotas conseguem enviar imagens o Bucket do projeto no S3, ou seja, **MUITO GRAVE**.
+Um exemplo de vulnerabilidade são as rotas de envio de imagem em ambiente de produção, atualmente a aplicação está utilizando o Amazon S3 para armazenar as imagens, sendo assim, qualquer pessoa que tiver acesso a essas rotas conseguem enviar imagens para o bucket do projeto no S3, ou seja, **MUITO GRAVE**.
 
 No momento a autenticação via ``API KEY`` não foi implementada para facilitar os testes, mas após o término do processo essas chaves de autenticação serão configuradas para aumentar a segurança da API e evitar dores de cabeça.
 
@@ -107,7 +103,7 @@ Em ambiente de desenvolvimento a aplicação está utilizando o ``DiskProvider``
 
 ---
 
-**Excluir promoção quando acabar:**
+**Excluir promoções automaticamente:**
 
 Quando um produto é colocado em promoção temos a data/hora de início e término, ao fim da promoção o registro continua vigente no banco de dados e na listagem de produto(s).
 
@@ -173,24 +169,33 @@ yarn
 
 ## Rodando o projeto
 
+**Requests Collections:**
+
+Caso seja preciso, as *requests collections* para testar as rotas no **Postman** e/ou **Insomnia**, o download pode ser feito clicando na opção desejada:
+
+- [Insomnia](https://drive.google.com/file/d/10A23rAAa1VWtDu7Tqm9lI9MlPqVCNbpX/view?usp=sharing);
+- [Postman](https://drive.google.com/file/d/1JcjkTyhFi9Ui0U_q92MlhqMViB0f0Zuh/view?usp=sharing).
+
+---
+
 Para rodar essa aplicação localmente você pode seguir uma das três opções descritas a seguir.
 
 Opções:
 
 - [Docker Compose](#docker-compose-recomendada); (Recomendada)
-- Manualmente;
-- Docker run.
+- [Manualmente](#manualmente);
+- [Docker run](#docker-run).
 
-## Docker Compose (Recomendada)
+## **Docker Compose (Recomendada)**
 
-**Requisitos:**
+### **Requisitos**
 
 - [Docker](https://docs.docker.com/engine/install/) versão 20.10.2 ou superior;
 - [Docker Compose](https://docs.docker.com/compose/install/) versão 1.29.2 ou superior.
 
 ---
 
-**Desenvolvimento:**
+### **Desenvolvimento**
 
 Após clonar o projeto e instalar as dependências, execute o seguinte comando para rodar a aplicação:
 
@@ -202,9 +207,9 @@ docker-compose up
 
 ---
 
-**Production ready:**
+### **Produção**
 
-Para executar o projeto em produção, será necessário criar um arquivo ``.env`` na raiz do projeto e preenche-lo, caso seja apenas um teste, basta copiar os valores de ``.env.dev``.
+Para executar o projeto em produção, será necessário criar um arquivo ``.env`` na raiz do projeto e preenche-lo, caso seja apenas um teste, basta copiar os valores de ``.env.example``.
 
 Com o ``.env`` criado e preenchido, rode o seguinte comando:
 
@@ -212,23 +217,15 @@ Com o ``.env`` criado e preenchido, rode o seguinte comando:
 docker-compose -f docker-compose.yml up
 ```
 
-## Manualmente
+---
 
-**Requisitos:**
+## **Manualmente**
 
-- [Docker](https://docs.docker.com/engine/install/) versão 20.10.2 ou superior;
-- [Node.js](https://nodejs.org/) versão 14.17.2 ou superior.
-- [Yarn](https://yarnpkg.com/) versão 1.22.10 ou superior.
+Para ver as instruções de como rodar o projeto manualmente clique [aqui](./docs/RUN.md#manualmente).
 
-...
+## **Docker run**
 
-## Docker run
-
-**Requisitos:**
-
-- [Docker](https://docs.docker.com/engine/install/) versão 20.10.2 ou superior;
-
-...
+Para ver as instruções de como rodar o projeto utilizando ``docker run`` [aqui](./docs/RUN.md#docker-run).
 
 # Testes
 
@@ -243,6 +240,7 @@ yarn test
 **Cobertura:**
 
 <img src="https://i.ibb.co/LJMfJtW/Screenshot-20210720-181328.png" alt="Cobertura dos testes" width="480"/>
+
 
 Para visualizar a cobertura dos testes de uma maneira mais intuítiva, acesse o diretório ``goomer-lista-rango/coverage/lcov-report``.
 
