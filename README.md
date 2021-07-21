@@ -171,10 +171,6 @@ git clone https://github.com/ribeirogab/goomer-lista-rango
 cd goomer-lista-rango
 ```
 
-```sh
-yarn
-```
-
 ## **Rodando o projeto**
 
 As rotas da aplicação podem ser testadas localmente ou em pode seguir uma das três opções descritas a seguir.

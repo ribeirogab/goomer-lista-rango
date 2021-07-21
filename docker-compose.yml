@@ -29,11 +29,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.production
-    command:
-      sh -c "yarn build && yarn start"
     ports:
       - 3333:3333
     volumes:
+      - "/app/node_modules"
       - .:/app
     environment:
       - REDIS_HOST=goomerRedis_production
