@@ -22,24 +22,24 @@
 - [Node.js](https://nodejs.org/);
 - [TypeScript](https://www.typescriptlang.org/).
 
-##### Banco de Dados:
+###### Banco de Dados:
 
 - [PostgreSQL](https://www.postgresql.org/).
 
-##### Testes unitários:
+###### Testes unitários:
 
 - [Jest](https://jestjs.io/).
 
-##### Cache:
+###### Cache:
 
 - [Redis](https://redis.io/).
 
-##### Ambiente
+###### Ambiente
 
 - [Docker](https://docs.docker.com/);
 - [Docker Compose](https://docs.docker.com/compose/).
 
-##### Padronização de código/commits:
+###### Padronização de código/commits:
 
 - [ESLint](https://eslint.org/);
 - [Prettier](https://prettier.io/);
