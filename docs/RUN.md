@@ -70,6 +70,12 @@ O Redis é opcional, a aplicação funcionará normalmente sem ele, porém não 
 docker-compose up -d redis
 ```
 
+**Instale as dependências:**
+
+```sh
+yarn
+```
+
 **Run:**
 
 ```sh
@@ -102,6 +108,12 @@ O Redis é opcional, a aplicação funcionará normalmente sem ele, porém não 
 
 ```sh
 docker-compose -f docker-compose.yml up -d redis
+```
+
+**Instale as dependências:**
+
+```sh
+yarn
 ```
 
 **Build:**
