@@ -31,7 +31,7 @@ services:
       - 3333:3333
     volumes:
       - "/app/node_modules"
-      - .:/app
+      - ./:/app/:rw
     environment:
       - REDIS_HOST=goomerRedis_development
       - POSTGRESQL_HOST=goomerListaRangoDB_development

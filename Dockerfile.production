@@ -3,7 +3,7 @@ WORKDIR /app
 COPY package.json .
 
 FROM base AS dependencies
-RUN yarn
+RUN yarn --no-progress
 
 FROM dependencies
 COPY --from=dependencies /app/node_modules ./node_modules
