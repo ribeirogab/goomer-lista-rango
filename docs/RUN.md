@@ -1,14 +1,5 @@
 # Rodando o projeto
 
-**Requests Collections:**
-
-Caso seja preciso, as *requests collections* para testar as rotas no **Postman** e/ou **Insomnia**, o download pode ser feito clicando na opção desejada:
-
-- [Insomnia](https://drive.google.com/file/d/10A23rAAa1VWtDu7Tqm9lI9MlPqVCNbpX/view?usp=sharing);
-- [Postman](https://drive.google.com/file/d/1JcjkTyhFi9Ui0U_q92MlhqMViB0f0Zuh/view?usp=sharing).
-
----
-
 Para rodar essa aplicação localmente você pode seguir uma das três opções descritas a seguir.
 
 Opções:
