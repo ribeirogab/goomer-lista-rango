@@ -27,12 +27,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development_environment
     command: yarn dev
     ports:
       - 3333:3333
     volumes:
       - .:/app
+    environment:
+      - REDIS_HOST=goomerRedis_development
+      - POSTGRESQL_HOST=goomerListaRangoDB_development
     depends_on:
       - database
       - redis
