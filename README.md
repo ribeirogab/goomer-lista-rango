@@ -253,3 +253,15 @@ yarn test
 Para visualizar a cobertura dos testes de uma maneira mais intuítiva, acesse o diretório ``goomer-lista-rango/coverage/lcov-report``.
 
 Esta pasta possuí um arquivo ``ìndex.html``, que ao ser aberto exibirá a cobertura de todos os testes em uma página web.
+
+---
+
+## Contato
+
+Qualquer dúvida, sugestão ou crítica construtiva estarei à disposição! :)
+
+**Muito obrigado!** 💙
+
+E-mail: **ribeirogabx@gmail.com**
+
+LinkedIn: [**https://www.linkedin.com/in/ribeirogab/**](https://www.linkedin.com/in/ribeirogab/*)
