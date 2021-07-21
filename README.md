@@ -17,7 +17,7 @@
 
 # Tecnologias
 
-##### Linguagens e ferramentas:
+###### Linguagens e ferramentas:
 
 - [Node.js](https://nodejs.org/);
 - [TypeScript](https://www.typescriptlang.org/).
@@ -34,20 +34,24 @@
 
 - [Redis](https://redis.io/).
 
+##### Ambiente
+
+- [Docker](https://docs.docker.com/);
+- [Docker Compose](https://docs.docker.com/compose/).
+
 ##### Padronização de código/commits:
 
 - [ESLint](https://eslint.org/);
 - [Prettier](https://prettier.io/);
 - [Commitizen](https://github.com/commitizen/cz-cli).
 
-##### Ambiente
-
-- [Docker](https://docs.docker.com/);
-- [Docker Compose](https://docs.docker.com/compose/).
-
 # Desafios
 
+**Trabalhar sem ORM:**
+
 Trabalhar sem ter um ``ORM``. Ter que relembrar e escrever SQL puro, aprender como fazer agregações no PostgreSQL e criar uma arquitetura própria de relação entre as ``entities`` do projeto com certeza foi o maior desafio.
+
+**TDD:**
 
 Outro desafio foi escrever primeiramente todos os testes unitários da aplicação com os repositórios fakes para somente após isso criar e implementar os repositórios do PostgreSQL. Está decisão foi tomada pelo fato de ter que criar toda a lógica no SQL manualmente, implementar essas lógicas primeiramente nos testes ajudaram bastante na criação dos repositórios do PostgreSQL.
 
@@ -123,7 +127,7 @@ src/
 |-- swagger.json # Apenas a documentação
 ```
 
-**Arquitetura dos módulos:**
+**📁 Arquitetura dos módulos:**
 
 ```shell
 {module}/
@@ -145,7 +149,7 @@ De forma abstrata, a aplicação possuí o seguinte fluxo de requisição:
 
 O banco de dados utilizado no projeto foi o PostgreSQL, mais por questão de familiaridade do que alguma outra razão específica.
 
-**Modelo (DER):**
+**💾 Modelo (DER):**
 
 <img src="https://i.ibb.co/4mFyy6f/Goomer-Lista-Rango-2x-8.png" alt="DER" width="800"/>
 
@@ -165,7 +169,7 @@ cd goomer-lista-rango
 yarn
 ```
 
-## Rodando o projeto
+## **Rodando o projeto**
 
 As rotas da aplicação podem ser testadas localmente ou em pode seguir uma das três opções descritas a seguir.
 
@@ -218,7 +222,7 @@ Para ver as instruções de como rodar o projeto utilizando ``docker run`` [aqui
 
 # Testes
 
-## Rotas
+## **Rotas**
 
 As rotas da aplicação podem ser testadas localmente com o repositório clonado ou em [**https://goomer-lista-rango.ribeirogab.me**](https://goomer-lista-rango.ribeirogab.me) (o servidor está espelhando o código da branch ``main``).
 
@@ -231,7 +235,7 @@ Caso seja preciso, as *requests collections* para testar as rotas no **Postman**
 
 ---
 
-## Testes unitários
+## **Testes unitários**
 
 Com a aplicação clonada e as dependências instaladas, para rodar os testes unitários execute o seguinte comando:
 
@@ -239,7 +243,7 @@ Com a aplicação clonada e as dependências instaladas, para rodar os testes un
 yarn test
 ```
 
-**Cobertura:**
+**🧪 Cobertura:**
 
 <img src="https://i.ibb.co/LJMfJtW/Screenshot-20210720-181328.png" alt="Cobertura dos testes" width="480"/>
 
