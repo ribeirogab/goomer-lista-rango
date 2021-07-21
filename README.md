@@ -13,34 +13,34 @@
 - [Instalação](#Instalação)
 - [Testes](#Testes)
 
-**Demo:** [https://goomer-lista-rango.ribeirogab.me](https://goomer-lista-rango.ribeirogab.me)
+**✨ Demo:** [**https://goomer-lista-rango.ribeirogab.me**](https://goomer-lista-rango.ribeirogab.me)
 
 # Tecnologias
 
-Linguagens e ferramentas:
+##### Linguagens e ferramentas:
 
 - [Node.js](https://nodejs.org/);
 - [TypeScript](https://www.typescriptlang.org/).
 
-Banco de Dados:
+##### Banco de Dados:
 
 - [PostgreSQL](https://www.postgresql.org/).
 
-Testes unitários:
+##### Testes unitários:
 
 - [Jest](https://jestjs.io/).
 
-Cache:
+##### Cache:
 
 - [Redis](https://redis.io/).
 
-Padronização de código/commits:
+##### Padronização de código/commits:
 
 - [ESLint](https://eslint.org/);
 - [Prettier](https://prettier.io/);
 - [Commitizen](https://github.com/commitizen/cz-cli).
 
-Ambiente
+##### Ambiente
 
 - [Docker](https://docs.docker.com/);
 - [Docker Compose](https://docs.docker.com/compose/).
@@ -55,7 +55,7 @@ Outro desafio foi escrever primeiramente todos os testes unitários da aplicaç�
 
 <!-- **Testes de integração:** -->
 
-**Tabela de indisponibilidade:**
+**🟥 Tabela de indisponibilidade:**
 
 Criar uma tabela de indisponibilidade no banco de dados para que os restaurantes consigam cadastrar um horário que estarão ausentes. Por exemplo:
 
@@ -63,7 +63,7 @@ Um restaurante trabalha das 11:00 às 17:00 de segunda à sexta, porém, em uma 
 
 ---
 
-**Implementar um ORM:**
+**🟢 Implementar um ORM:**
 
 Apesar da aplicação estar relativamente organizada, um ``ORM`` seria de grande ajuda principalmente para deixar o código mais legível e manutenível, retirando toda a complexidade do SQL dos repositórios.
 
@@ -74,7 +74,7 @@ Opções de ORM:
 
 ---
 
-**API de códigos postais:**
+**📬 API de códigos postais:**
 
 Atualmente a API possui um ``provider`` códigos postais com duas implementações:
 
@@ -91,7 +91,7 @@ Possíveis soluções:
 
 ---
 
-**API KEY:**
+**🔑 API KEY:**
 
 Como a API não tem nenhuma forma de autenticação e todas as rotas são públicas isso a torna muito insegura e vulnerável.
 
@@ -103,19 +103,17 @@ Em ambiente de desenvolvimento a aplicação está utilizando o ``DiskProvider``
 
 ---
 
-**Excluir promoções automaticamente:**
+**❌ Excluir promoções automaticamente:**
 
 Quando um produto é colocado em promoção temos a data/hora de início e término, ao fim da promoção o registro continua vigente no banco de dados e na listagem de produto(s).
 
 Uma possível melhoria que evitaria informações desnecessárias no banco seria: após o fim da promoção deletar o registro do banco de dados e "setar" o campo ``promotion`` dos produtos (nas listagens) como ``null``.
 
----
-
 # Arquitetura
 
 O projeto foi construído em cima da arquitetura Domain-Driven Design ou Projeto Orientado a Domínio (famoso DDD) que é um padrão de modelagem orientado a objetos (ou módulos).
 
-## Arquitetura global
+**🌐 Arquitetura global:**
 
 ```shell
 src/
@@ -125,7 +123,7 @@ src/
 |-- swagger.json # Apenas a documentação
 ```
 
-## Arquitetura dos módulos
+**Arquitetura dos módulos:**
 
 ```shell
 {module}/
@@ -137,7 +135,7 @@ src/
 |-- utils/ # Arquivo com funções/lógicas que são utilizadas em dois ou mais services
 ```
 
-## Fluxo de requisição
+**↔️ Fluxo de requisição:**
 
 De forma abstrata, a aplicação possuí o seguinte fluxo de requisição:
 
@@ -169,16 +167,7 @@ yarn
 
 ## Rodando o projeto
 
-**Requests Collections:**
-
-Caso seja preciso, as *requests collections* para testar as rotas no **Postman** e/ou **Insomnia**, o download pode ser feito clicando na opção desejada:
-
-- [Insomnia](https://drive.google.com/file/d/10A23rAAa1VWtDu7Tqm9lI9MlPqVCNbpX/view?usp=sharing);
-- [Postman](https://drive.google.com/file/d/1JcjkTyhFi9Ui0U_q92MlhqMViB0f0Zuh/view?usp=sharing).
-
----
-
-Para rodar essa aplicação localmente você pode seguir uma das três opções descritas a seguir.
+As rotas da aplicação podem ser testadas localmente ou em pode seguir uma das três opções descritas a seguir.
 
 Opções:
 
@@ -228,6 +217,19 @@ Para ver as instruções de como rodar o projeto manualmente clique [aqui](./doc
 Para ver as instruções de como rodar o projeto utilizando ``docker run`` [aqui](./docs/RUN.md#docker-run).
 
 # Testes
+
+## Rotas
+
+As rotas da aplicação podem ser testadas localmente com o repositório clonado ou em [**https://goomer-lista-rango.ribeirogab.me**](https://goomer-lista-rango.ribeirogab.me) (o servidor está espelhando o código da branch ``main``).
+
+**Requests Collections:**
+
+Caso seja preciso, as *requests collections* para testar as rotas no **Postman** e/ou **Insomnia**, o download pode ser feito clicando na opção desejada:
+
+- [Insomnia](https://drive.google.com/file/d/10A23rAAa1VWtDu7Tqm9lI9MlPqVCNbpX/view?usp=sharing);
+- [Postman](https://drive.google.com/file/d/1JcjkTyhFi9Ui0U_q92MlhqMViB0f0Zuh/view?usp=sharing).
+
+---
 
 ## Testes unitários
 
