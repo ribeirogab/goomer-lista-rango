@@ -14,6 +14,7 @@ import { IRestaurantAddressesRepository } from '../repositories/IRestaurantAddre
 import { IRestaurantsRepository } from '../repositories/IRestaurantsRepository';
 import { IWorkSchedulesRepository } from '../repositories/IWorkSchedulesRepository';
 import { checkIfTheWorkingSchedulesAreValid } from '../utils/checkIfTheWorkingSchedulesAreValid';
+import { createAddressesIfItDoesNotExist } from '../utils/createAddressesIfItDoesNotExist';
 
 type WorkSchedules = {
   sunday?: IWeekDayHours;
@@ -88,11 +89,12 @@ export class UpdateRestaurantService {
     }
 
     if (inputAddresses) {
-      const addresses =
-        await this.AddressProvider.createAddressesIfItDoesNotExist({
-          addresses: inputAddresses,
-          addressesRepository: this.addressesRepository,
-        });
+      const addresses = await createAddressesIfItDoesNotExist(
+        inputAddresses,
+        this.addressesRepository,
+        this.AddressProvider,
+      );
+
       await this.restaurantAddressesRepository.updateByRestaurantId({
         restaurantId,
         addresses,

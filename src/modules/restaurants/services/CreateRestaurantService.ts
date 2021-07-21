@@ -14,6 +14,7 @@ import { IRestaurantAddressesRepository } from '../repositories/IRestaurantAddre
 import { IRestaurantsRepository } from '../repositories/IRestaurantsRepository';
 import { IWorkSchedulesRepository } from '../repositories/IWorkSchedulesRepository';
 import { checkIfTheWorkingSchedulesAreValid } from '../utils/checkIfTheWorkingSchedulesAreValid';
+import { createAddressesIfItDoesNotExist } from '../utils/createAddressesIfItDoesNotExist';
 
 interface IRequest {
   name: string;
@@ -75,11 +76,11 @@ export class CreateRestaurantService {
 
     const restaurant = await this.restaurantsRepository.create({ name });
 
-    const addresses =
-      await this.AddressProvider.createAddressesIfItDoesNotExist({
-        addresses: inputAddresses,
-        addressesRepository: this.addressesRepository,
-      });
+    const addresses = await createAddressesIfItDoesNotExist(
+      inputAddresses,
+      this.addressesRepository,
+      this.AddressProvider,
+    );
 
     const restaurantAddresses =
       await this.restaurantAddressesRepository.createMany({

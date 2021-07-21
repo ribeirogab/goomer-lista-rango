@@ -55,7 +55,7 @@ Trabalhar sem ter um ``ORM``. Ter que relembrar e escrever SQL puro, aprender co
 
 Outro desafio foi escrever primeiramente todos os testes unitários da aplicação com os repositórios fakes para somente após isso criar e implementar os repositórios do PostgreSQL. Está decisão foi tomada pelo fato de ter que criar toda a lógica no SQL manualmente, implementar essas lógicas primeiramente nos testes ajudaram bastante na criação dos repositórios do PostgreSQL.
 
-# Melhorias
+# Possíveis melhorias
 
 <!-- **Testes de integração:** -->
 
