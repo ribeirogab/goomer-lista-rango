@@ -1,10 +1,12 @@
 FROM node:14 AS base
-
 WORKDIR /app
 COPY package.json .
 
+FROM base AS dependencies
 RUN yarn
 
+FROM dependencies
+COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 RUN yarn build
 EXPOSE 3333
