@@ -13,7 +13,7 @@
 - [Instalação](#Instalação)
 - [Testes](#Testes)
 
-**Demo:** https://goomer-lista-rango.ribeirogab.me
+**Demo:** [https://goomer-lista-rango.ribeirogab.me](https://goomer-lista-rango.ribeirogab.me)
 
 # Tecnologias
 
@@ -24,7 +24,7 @@ Linguagens e ferramentas:
 
 Banco de Dados:
 
-- [PostgreSQL](https://www.postgresql.org/);
+- [PostgreSQL](https://www.postgresql.org/).
 
 Testes unitários:
 
@@ -171,6 +171,8 @@ cd goomer-lista-rango
 yarn
 ```
 
+<br>
+
 ## Rodando o projeto
 
 Para rodar essa aplicação localmente você pode seguir uma das três opções descritas a seguir.
@@ -180,6 +182,17 @@ Opções:
 - [Docker Compose](#docker-compose-recomendada); (Recomendada)
 - [Manualmente](#manualmente);
 - [Docker run](#docker-run).
+
+<br>
+
+**Requests Collection:**
+
+Caso seja preciso as *requests collection* para o **Postman** e/ou **Insomnia**, o download pode ser feito clicando na opção desejada:
+
+- Insomnia;
+- Postman.
+
+<br>
 
 ## **Docker Compose (Recomendada)**
 
@@ -214,17 +227,19 @@ docker-compose -f docker-compose.yml up
 
 ---
 
-## Manualmente
+<br>
+
+## **Manualmente**
 
 Para ver as instruções de como rodar o projeto manualmente clique [aqui](./docs/RUN.md#manualmente).
 
----
+<br>
 
-## Docker run
+## **Docker run**
 
 Para ver as instruções de como rodar o projeto utilizando ``docker run`` [aqui](./docs/RUN.md#docker-run).
 
- ---
+<br>
 
 # Testes
 
@@ -239,6 +254,9 @@ yarn test
 **Cobertura:**
 
 <img src="https://i.ibb.co/LJMfJtW/Screenshot-20210720-181328.png" alt="Cobertura dos testes" width="480"/>
+
+<br>
+<br>
 
 Para visualizar a cobertura dos testes de uma maneira mais intuítiva, acesse o diretório ``goomer-lista-rango/coverage/lcov-report``.
 
