@@ -33,6 +33,12 @@ docker-compose up
 
 Para executar o projeto em produção, será necessário criar um arquivo ``.env`` na raiz do projeto e preenche-lo, caso seja apenas um teste, basta copiar os valores de ``.env.example``.
 
+```sh
+cp .env.example .env
+
+# Ou faça isso manualmente
+```
+
 Com o ``.env`` criado e preenchido, rode o seguinte comando:
 
 ```sh
