@@ -1,5 +1,14 @@
 # Rodando o projeto
 
+**Requests Collections:**
+
+Caso seja preciso, as *requests collections* para testar as rotas no **Postman** e/ou **Insomnia**, o download pode ser feito clicando na opção desejada:
+
+- [Insomnia](https://drive.google.com/file/d/10A23rAAa1VWtDu7Tqm9lI9MlPqVCNbpX/view?usp=sharing);
+- [Postman](https://drive.google.com/file/d/1JcjkTyhFi9Ui0U_q92MlhqMViB0f0Zuh/view?usp=sharing).
+
+---
+
 Para rodar essa aplicação localmente você pode seguir uma das três opções descritas a seguir.
 
 Opções:
@@ -41,7 +50,7 @@ docker-compose -f docker-compose.yml up
 
 ---
 
-## Manualmente
+## **Manualmente**
 
 ### **Requisitos**
 
@@ -56,15 +65,21 @@ docker-compose -f docker-compose.yml up
 
 Caso decida rodar manualmente, siga as etapas abaixo:
 
-```sh
-docker-compose up database -d
-```
+**Subir container do PostgreSQL:**
 
 ```sh
-# opcional
-
-docker-compose up redis -d
+docker-compose up -d database
 ```
+
+**Subir container do Redis:**
+
+O Redis é opcional, a aplicação funcionará normalmente sem ele, porém não irá se beneficiar da melhoria nos tempos de resposta das requisições que o cache de dados traz.
+
+```sh
+docker-compose up -d redis
+```
+
+**Run:**
 
 ```sh
 yarn dev
@@ -74,27 +89,37 @@ yarn dev
 
 ### **Produção**
 
-Para executar o projeto manualmente em produção, execute os comandos abaixo:
+Para executar o projeto em produção, será necessário criar um arquivo ``.env`` na raiz do projeto e preenche-lo, caso seja apenas um teste, basta copiar os valores de ``.env.example``.
 
 ```sh
 cp .env.example .env
 
-# ou faça isso manualmente
+# Ou faça isso manualmente
 ```
+
+Com o ``.env`` criado e preenchido, siga os seguintes passos:
+
+**Subir container do PostgreSQL:**
 
 ```sh
-docker-compose -f docker-compose.yml up database -d
+docker-compose -f docker-compose.yml up -d database
 ```
+
+**Subir container do Redis:**
+
+O Redis é opcional, a aplicação funcionará normalmente sem ele, porém não irá se beneficiar da melhoria nos tempos de resposta das requisições que o cache de dados traz.
 
 ```sh
-# opcional
-
-docker-compose -f docker-compose.yml up redis -d
+docker-compose -f docker-compose.yml up -d redis
 ```
+
+**Build:**
 
 ```sh
 yarn build
 ```
+
+**Run:**
 
 ```sh
 yarn start
@@ -102,8 +127,52 @@ yarn start
 
 ---
 
-## Docker run
+## **Docker run**
 
 **Requisitos:**
 
 - [Docker](https://docs.docker.com/engine/install/) versão 20.10.2 ou superior;
+
+---
+
+**Atenção!** Cada bloco de código possuí duas sessões de comandos ``Desenvolvimento`` e ``Produção``, é importante que a sessão que for escolhida seja executada até o final.
+
+**Criar network:**
+
+Para que os containers possam se comunicar facilmente, iremos criar uma ``network``:
+
+```sh
+docker network create goomer-network
+```
+
+**Subir container do PostgreSQL:**
+
+```sh
+docker run --net goomer-network --name goomerListaRangoDB -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=goomer_lista_rango -p 5432:5432 -v ${PWD}/src/shared/infra/databases/postgreSQL/init.sql:/docker-entrypoint-initdb.d/init.sql -d postgres
+```
+
+**Subir container do Redis:**
+
+O Redis é opcional, a aplicação funcionará normalmente sem ele, porém não irá se beneficiar da melhoria nos tempos de resposta das requisições que o cache de dados traz.
+
+```sh
+docker run --net goomer-network --name goomerRedis -p 6379:6379 -d redis:alpine
+```
+
+**Gerar build da imagem:**
+
+```sh
+# Desenvolvimento
+docker build -f Dockerfile -t goomer:node .
+
+# Produção
+docker build -f Dockerfile.production -t goomer:node .
+```
+
+**Run:**
+
+Com a build da imagem já criada, vamos executa-la:
+
+```sh
+docker run --net goomer-network -it --rm -v ${PWD}:/app -v /app/node_modules -p 3333:3333 -e REDIS_HOST=goomerRedis -e POSTGRESQL_HOST=goomerListaRangoDB goomer:node
+```

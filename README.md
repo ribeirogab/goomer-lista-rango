@@ -53,11 +53,7 @@ Outro desafio foi escrever primeiramente todos os testes unitários da aplicaç�
 
 # Melhorias
 
-<!-- **Testes de integração:**
-
-Os testes de integração são mais que necessários nesta e em qualquer aplicação que visa escalabilidade e confiabilidade.
-
---- -->
+<!-- **Testes de integração:** -->
 
 **Tabela de indisponibilidade:**
 
@@ -80,7 +76,7 @@ Opções de ORM:
 
 **API de códigos postais:**
 
-Atualmente a API possui um ``provider`` de códigos postais com duas implementações:
+Atualmente a API possui um ``provider`` códigos postais com duas implementações:
 
 - Brasil API;
 - Postmon.
@@ -89,7 +85,7 @@ Porém essas APIs fornecem apenas códigos postais (CEP) do Brasil, sendo assim,
 
 Possíveis soluções:
 
-- Criar uma implementação do [zipcodebase](https://zipcodebase.com/):
+- Criar uma implementação do [Zipcodebase](https://zipcodebase.com/):
 
   O Zipcodebase é uma API de códigos postais **globais**, porém disponibiliza apenas 5000 requisições mensais, dependendo do tamanho da aplicação pode ser viável. (os planos pagos são bem caros $$$)
 
@@ -99,7 +95,7 @@ Possíveis soluções:
 
 Como a API não tem nenhuma forma de autenticação e todas as rotas são públicas isso a torna muito insegura e vulnerável.
 
-Um exemplo de vulnerabilidade são as rotas de envio de imagem em ambiente de produção, atualmente a aplicação está utilizando o Amazon S3 para armazenar as imagens, sendo assim, qualquer pessoa que tiver acesso a essas rotas conseguem enviar imagens o Bucket do projeto no S3, ou seja, **MUITO GRAVE**.
+Um exemplo de vulnerabilidade são as rotas de envio de imagem em ambiente de produção, atualmente a aplicação está utilizando o Amazon S3 para armazenar as imagens, sendo assim, qualquer pessoa que tiver acesso a essas rotas conseguem enviar imagens para o bucket do projeto no S3, ou seja, **MUITO GRAVE**.
 
 No momento a autenticação via ``API KEY`` não foi implementada para facilitar os testes, mas após o término do processo essas chaves de autenticação serão configuradas para aumentar a segurança da API e evitar dores de cabeça.
 
@@ -171,9 +167,16 @@ cd goomer-lista-rango
 yarn
 ```
 
-<br>
-
 ## Rodando o projeto
+
+**Requests Collections:**
+
+Caso seja preciso, as *requests collections* para testar as rotas no **Postman** e/ou **Insomnia**, o download pode ser feito clicando na opção desejada:
+
+- [Insomnia](https://drive.google.com/file/d/10A23rAAa1VWtDu7Tqm9lI9MlPqVCNbpX/view?usp=sharing);
+- [Postman](https://drive.google.com/file/d/1JcjkTyhFi9Ui0U_q92MlhqMViB0f0Zuh/view?usp=sharing).
+
+---
 
 Para rodar essa aplicação localmente você pode seguir uma das três opções descritas a seguir.
 
@@ -182,17 +185,6 @@ Opções:
 - [Docker Compose](#docker-compose-recomendada); (Recomendada)
 - [Manualmente](#manualmente);
 - [Docker run](#docker-run).
-
-<br>
-
-**Requests Collection:**
-
-Caso seja preciso as *requests collection* para o **Postman** e/ou **Insomnia**, o download pode ser feito clicando na opção desejada:
-
-- Insomnia;
-- Postman.
-
-<br>
 
 ## **Docker Compose (Recomendada)**
 
@@ -227,19 +219,13 @@ docker-compose -f docker-compose.yml up
 
 ---
 
-<br>
-
 ## **Manualmente**
 
 Para ver as instruções de como rodar o projeto manualmente clique [aqui](./docs/RUN.md#manualmente).
 
-<br>
-
 ## **Docker run**
 
 Para ver as instruções de como rodar o projeto utilizando ``docker run`` [aqui](./docs/RUN.md#docker-run).
-
-<br>
 
 # Testes
 
@@ -255,8 +241,6 @@ yarn test
 
 <img src="https://i.ibb.co/LJMfJtW/Screenshot-20210720-181328.png" alt="Cobertura dos testes" width="480"/>
 
-<br>
-<br>
 
 Para visualizar a cobertura dos testes de uma maneira mais intuítiva, acesse o diretório ``goomer-lista-rango/coverage/lcov-report``.
 
